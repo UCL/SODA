@@ -28,10 +28,5 @@ UCL Social Data Institute repository
 
 # Research
 1. Inequality
-   a) nestor
-   b) Imran/Wendy
-   c) cemmap
-   d) IFS
-   e) big or small
 2. Visualisation
 3. 
