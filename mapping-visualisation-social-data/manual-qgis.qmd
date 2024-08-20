@@ -1,0 +1,2720 @@
+---
+title: "Practical guide to mapping and visualisation of crime and social data in QGIS"
+author: "Dr Nick Bearman"
+toc: true
+number-sections: true
+format: 
+  pdf: default
+  html: default
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+```{=html}
+<!-- Creative commons license
+logo
+
+This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0
+International License. You are free to share – copy and redistribute the material in any medium
+or format. You are free to adapt – remix, transform and build upon the material. You may not
+use the material for commercial purposes. If you have any questions, or concerns – please send
+an email to Anwar Musah (a.musah@ucl.ac.uk)
+
+-->
+```
+\newpage
+
+## Lesson 1: Preparation: Installing and Setting up QGIS
+
+### Introduction
+
+QGIS is a friendly open source Geographical Information System (GIS)
+software which is compatible with many operating systems such as
+Windows, Mac (OSX), and Linux. It supports many different spatial data
+formats, and works with both vector and raster spatial data. It has a
+wide range of plugins which can be remotely installed to provide
+additional functions for handling spatial data and perform complex
+spatial analyses. More information about QGIS can be accessed on
+<https://qgis.org/>.
+
+### Installing QGIS
+
+The latest LTR version of QGIS is version 3.34 which can be downloaded
+from the web link on <https://qgis.org/download/>.
+
+::: callout-note
+QGIS is available in a LTR version and a standard version. A new
+standard version is released every three months, which may include new
+features. The LTR (Long Term Release) version is updated every year. The
+LTR version is recommended for this manual as new features will not be
+added until the next LTR one year later. *If you use a different
+version, the screenshots might look slightly different.*
+:::
+
+#### Download for Windows
+
+-   Open a web browser and go to <http://www.qgis.org>.\
+
+-   Click the green **Download** button:\
+    ![](images/qgis-download-now.png){width="30%"}
+
+-   Read the information about how QGIS is funded. 
+-   Click on the orange **Click Skip it and go to download.** button:\
+    ![](images/qgis-skip-and-download.png){width="50%"}
+
+-   Download the latest version of the long term release **Long Term Version for Windows (3.34 LTR)**.
+
+    ![](images/qgis-download-ltr.png){width="65%"}
+
+-   Save the file `QGIS-OSGeo4W-3.34.9-1.msi` somewhere you can find it,
+    e.g. **Downloads**.
+
+*The file is quite large (\~1.2GB) so might take a while to download.*
+
+-   Open your **Downloads** folder where you saved the `QGIS-OSGeo4W-3.34.9-1.msi`
+    file.
+
+-   Open the `QGIS-OSGeo4W-3.34.9-1.msi` file.
+
+-   Choose **Run**.
+
+-   Click **Next** to run through the installation process, and agree to
+    the License Agreement.
+
+-   Click **Yes** if needed to allow QGIS to be installed.
+
+*The installation process shouldn't take too long - it took about 3
+minutes on my computer.*
+
+-   Click **Finish** when the process is complete.
+
+#### Download for macOS
+
+-   Click the green **Download** button:\
+    ![](images/qgis-download-now.png){width="30%"}
+    
+-   Read the information about how QGIS is funded. 
+-   Click on the orange **Click Skip it and go to download.** button:\
+    ![](images/qgis-skip-and-download.png){width="50%"}
+    
+-   Download the latest version of the long term release **Long Term Version for Windows (3.34 LTR)**.
+
+    ![](images/qgis-download-ltr-macos.png){width="65%"}
+
+-   Save the file `qgis-macos-ltr.dmg` somewhere you can find it,
+    e.g. **Downloads**.
+
+*The file is quite large (\~1.6GB) so might take a while to download.*
+
+
+-   Open your **Downloads** folder where you saved the `qgis-macos-ltr.dmg` file.
+
+-   Click on the `qgis-macos-ltr.dmg` file to open it.
+
+-   Click **Agree** to agree to the licence terms.
+
+![](images/qgis-install-oxs-terms.png){width="60%"}
+
+-   Wait for OSX to verify the file.
+
+-   Click and drag the **QGIS** app into the **Applications** folder in
+    this window:
+
+    ![](images/qgis-osx-install.png){width="75%"}
+
+-   Once QGIS is installed, you should be able to open it from the
+    Applications folder.
+
+If you have any problems, have a look at
+<https://www.geeksforgeeks.org/how-to-download-and-install-qgis-on-macos/>
+
+*After installing QGIS, the first launch attempt may fail due to security protections. To enable QGIS, control-click on its icon in your Applications folder and select Open in the context menu. A confirmation dialog will display where you need to click the Open button again. This only has to be done once.*
+
+```{=html}
+<!-- 
+
+*QGIS is not yet signed/notarised as required by MacOS, so when you
+first launch the app, hold down the Option key, right click on the QGIS
+app icon and choose Open.* ###A SCREENSHOT OF THIS MAY BE USEFUL - IF
+YOU DO NOT USE MACOS JUST MAYBE FIND IT ON GOOGLE
+
+-->
+```
+::: callout-note
+## **macOS / macBook Users**
+
+All the screenshots were taking using QGIS on Windows, so things might
+look a little different on macOS. However all the same features are
+there and you will be able to follow the materials without any problems.
+:::
+
+#### OSGeo4W Network Installer
+
+When you download QGIS, you also have the option of the OSGeo4W Network
+Installer for Windows. This is useful if you are a frequent user of
+QGIS. It makes upgrading QGIS much easier, and can also allow you to
+install multiple versions on one computer. When you first go through
+these instructions, stick with the stand alone installer.
+
+### Setting up QGIS
+
+Once QGIS is installed, the icons will be included in the Start menu and
+on the Desktop. Do the following to open QGIS Desktop:
+
+-   Click on the **Start** button and browse through the applications
+    that have been listed in alphabetical order. Browse down to the
+    letter Q where you should see QGIS 3.34.9 folder shown as New.
+
+-   Expand this folder by clicking on it. There will be a number of
+    other applications as well. The one we want to open is **QGIS
+    Desktop 3.34.9**.
+
+    ![](images/qgis-start-menu.png){width="50%"}
+
+-   Click on the icon to open **QGIS Desktop 3.34.9**.
+
+-   A green splash screen will appear while QGIS loads. Wait for the the
+    program to load.
+
+When opening QGIS for the first time, you are greeted with a brand new
+window which looks like the example below:
+
+![](images/qgis-open.png)
+
+This is QGIS main interface.
+
+To begin with, there is a list of news items (top-right) and a list of
+project templates (bottom-right). There is also Recent Projects which
+will list your recently opened projects (currently blank).
+
+-   Click **Project \> New Project** or the New Project icon
+    ![](images/new-project.png){height="20"} (top-left) to start a blank
+    project.
+
+The interface has three components which you will be using:
+
+1.  Section 1 is home to the **menu** and **toolbars**. This tool allows
+    the user to access various menu tabs such as the **Project**,
+    **Edit**, **View**, **Layer** and **Plugins**. The menu tabs are
+    position on top of the toolbars. The toolbars correspond to the
+    various icons which allows the user immediate access to some
+    functions.
+
+2.  Section 2 is the **Layer Panel** (or Table of Contents). It enables
+    the user to see which list of spatial and non-spatial data are
+    loaded into QGIS.
+
+3.  Section 3 is the **Display window**. It shows which spatial data are
+    active in our Layer Panel. Here, we can visualise our spatial data
+    and see constructions of our maps.
+
+![](images/qgis-blank-project.png)
+
+There are some additional toolbars that we will need for some of the
+tutorials. We will add these as we go through the material.
+
+\newpage
+
+There are some basic functions in the toolbar will use often during the
+tutorial series. Here are some of the functions in the Menu and Layer
+toolbars:
+
+| Useful Toolbar Icons                                  | Descriptions                                |
+|--------------------------|----------------------------------------------|
+| ![](images/new-project.png){height="40"}              | Open a new QGIS project                     |
+| ![](images/open-project.png){height="40"}             | Open an existing QGIS project from a folder |
+| ![](images/save.png){height="40"}                     | Save the current QGIS project               |
+| ![](images/new-print-layout.png){height="40"}         | Create a new Print Layout (see Lesson 4)    |
+| ![](images/pan-map.png){height="40"}                  | Pan the map                                 |
+| ![](images/zoom-in.png){height="40"}                  | Zoom into the map                           |
+| ![](images/zoom-out.png){height="40"}                 | Zoom out of the map                         |
+| ![](images/zoom-full.png){height="40"}                | Zoom to full extent of your data            |
+| ![](images/open-data-source-manager.png){height="40"} | Open data source manager (to add data)      |
+
+\newpage
+
+## Lesson 2: Adding Spatial Vector Data in QGIS
+
+| Learning Outcomes                                     | GIS Concepts                             |
+|-----------------------------------------|-------------------------------|
+| Understand vector and raster data                     | Vector data, Raster data (Lesson 5) |
+| Extract data from a zip file                          | \*.zip file                       |
+| Saving QGIS Project file                              | \*.qgz file                        |
+| Opening and symbolising vector data from a shape file | \*.shp files                |
+
+### Introduction
+
+We will learn how to add different types of vector spatial data into
+QGIS. There are two distinct formats in which geographical information
+can be stored -- these are known as **Vector** and **Raster**.
+
+-   **Vector data:** Represents data with a geographical location as a
+    series of discrete objects. These are stored as either points, lines
+    or polygons. A vector is useful for storing data that has discrete
+    boundaries, for example, country boundaries, streets and individual
+    point locations of places (i.e. a building, town or city).
+
+-   **Raster data:** Considers geographical data as a grid of equal
+    sized cells. Each of these cells contains a number that represents
+    the data. Raster data is very useful for storing data that varies
+    continuously on a surface. Examples include surface elevation,
+    temperature, rainfall, air pollution, population density or
+    satellite images.
+
+For now, we will be focusing of vector data (later in Lesson 5 we will
+learn more about raster data). We will learn how to add vector spatial
+data into QGIS and construct a basic atlas of Africa showing its major
+cities and how their roads are connected.
+
+### Downloading data
+
+For each lesson, you will need to download the data we are using and
+extract it. We provide the data as a zip file, which is a series of many
+files compressed together. To work with the data you need to download it
+and extract it.
+
+-   Download the data for Lesson 2: `lesson-2-data.zip` from the website
+    and save it somewhere you can find it.
+
+-   Extract the file by right-clicking `lesson-2-data.zip` and choosing
+    **Extract All...**.
+
+![](images/extract-data-1.png){width="60%"}
+
+-   Click **Extract**. The files will be extracted and a new window will
+    appear. There should be 18 files, and they should look like this:
+
+![](images/extract-data-2.png){width="60%"}
+
+### Opening and saving a new project in QGIS
+
+Open QGIS Desktop 3.34 (as explained in Section 1.3) by clicking on the
+icon and you will be greeted with a blank window which reads Recent
+Projects. We are going to open a New Project for this practical session
+and save this project as `Lesson-2.qgz`:
+
+-   Click on the icon located in the toolbar to open a New Project
+    ![](images/new-project.png){height="20"} *(top-left of the screen)*
+
+![](images/new-project-qgis-window.png){width="100%"}
+
+-   This will create a blank, new project for our work.
+
+-   Save it by using the **Save** icon ![](images/save.png){height="20"}
+
+-   Browse to where ever you want to save the file. Type in the name
+    `Lesson-2` and click **Save** to save it.
+
+![](images/save-project.png){width="60%"}
+
+When working in QGIS it is always good practice to save your project
+frequently. This feature saves your progress, and so if you were to
+close QGIS and re-open the application, your project will be listed in
+the **Recent Projects** menu. You can then select which project you want
+to open, and continue where you had left off.
+
+### Displaying vector data in QGIS
+
+Let's start to view some spatial data in the **Display** window. We are
+going to construct a basic atlas of Africa which shows the location of
+major cities and road networks. We have the following vector data (or
+shape files (.shp)) for the whole of Africa, the 186 major cities and
+over 400,000 km of roads:
+
+-   `Africa_countries.shp`
+-   `Major_cities.shp`
+-   `Major_roads.shp`
+
+Let's load these shape files starting with Africa as the base layer to
+our Display window:
+
+-   Click on the **Open Data Source Manager**
+    ![](images/open-data-source-manager.png){height="20"} icon in the
+    Layer Toolbar.
+
+![](images/data-source-manager.png){width="100%"}
+
+This will bring up a small menu called the **Data Source Manager**. This
+allows the user to navigate the directory to select their data.
+
+![](images/add-shape-file.png){width="80%"}
+
+-   Select **Vector** on the left.
+
+-   Click on the **Browse** button ![](images/browse.png){height="20"}
+    and go to the location of your downloaded data and select the shape
+    file `African_countries.shp`.
+
+-   Click **Open**. The selection and the path to the shape file's
+    location will be shown in the Vector Dataset(s) panel
+
+-   Click on the **Add** button to add shape file into the Display
+    window
+
+-   Click **Close** to close the Data Source Manager menu
+
+![](images/africa-map.png){width="80%"}
+
+The shape file for Africa has been added as a layer -- you can see this
+in *Layers Panel*. The contains the boundaries of the
+`African_countries` layer. This vector data is a typical example of a
+polygon.
+
+Now let's include road networks in Africa and the cities to the atlas --
+repeat the above steps by adding the data in the following order:
+`Major_roads.shp` and `Major_cities.shp`.
+
+As you can see, the shape files for the roads and cities have been added
+as layers in the Layer Panel. The dots correspond to the point location
+of cities, and the roads are represented by the lines. The vector data
+for the cities are classed as points, whereas those for the roads are
+termed as lines.
+
+![](images/africa-map-2.png){width="80%"}
+
+::: callout-note
+**Colours:** QGIS automatically chooses a colour at random when adding
+new data. You can see in my example it has chosen brown for the
+countries, yellow for the roads and orange for the cities. We can change
+this; which we will do in the next section.
+:::
+
+### Changing the visual and colour properties of vector data
+
+At the moment the image in the Display window does not qualify as a
+decent atlas. We are going to modify the colours and symbology for
+Africa, the roads and the cities; and show the sea surrounding the
+continent. Let's give Africa a land colour of bone yellow:
+
+-   Right-click on the layer `African_countries` in the Layers Panel and
+    select **Properties**
+
+-   The Layer Properties menu for African_countries will appear -- on
+    the left-hand side of the menu, select **Symbology**.
+
+-   Select **Simple Fill** to change the fill colours of the polygons.
+    This is located on the top of the right-hand side panel of the Layer
+    Properties menu
+
+![](images/fill-colour.png){width="80%"}
+
+-   Click the down arrow to the right of on the selection bar of **Fill
+    color** to select the desired colour.
+
+-   This will show the Colour Wheel you can use this to choose the
+    colour. You can rotate the Triangle by dragging the vertical bar
+    around the colour-wheel to select a colour -- this is referred to as
+    Hue region. Lightness of the colour is controlled by dragging the
+    circular held within the Triangle.
+
+-   Play around with the colour parameters and try to select one that
+    represents a bone yellow colour.
+
+-   Click **OK**.
+
+You can repeat the above steps for changing the colours for the roads
+and cities by going into their properties. When you access the
+**Symbology** menu for the lines and point data -- ensure to select
+**Simple Line** and **Simple marker** respectively, in the right-hand
+side panel of the Layer Properties to change their appearance.
+
+Explore the options and make the following changes:
+
+-   `Major roads` -- choose *Dark Grey* colour and *Stroke width* (line
+    thickness) *0.15mm*
+
+-   `Major cities` -- choose *Black* colour and *Size* (diameter of
+    point) as *1.0mm*
+
+We can change the background colour of the Display window to represent
+the sea surrounding Africa. This can be done by:
+
+-   Click on the tab **Project** located on the top Menu toolbar, and
+    then click on **Properties**
+-   The Project Properties menu will appear. If it is not already selected, choose **General** on the left hand side. 
+-   Click on the arrow for the **Background color** section and select *Sea Blues* from the
+    colour-wheel
+-   Click **OK**
+
+The resulting atlas appear as follows in the Display window:
+
+![](images/africa-map-3.png){width="100%"}
+
+Now that we are done constructing our Atlas, we can end this project by
+saving it -- click on the save icon ![](images/save.png){height="20"} to
+save and overwrite `Lesson-2.qgz`.
+
+### Summary
+
+We constructed a basic Atlas showing the locations of big cities and
+roads in Africa, and familiarised ourselves with adding shape files in
+QGIS, and knowing what constitutes a point, line and polygon data.
+Finally, we learnt how to modify the appearance of these vector data by
+accessing their properties.
+
+In the next tutorials, we will focus on the data science of managing
+spatial layers -- the optimal way of arranging vector layers in the
+Layer Panel and modifying their properties for optimal visualisation. We
+also learn how to import spreadsheet data containing attribute
+information and perform attribute joins. Ultimately, these techniques
+will be used visualise the distribution of poverty in Nigeria.
+
+### Appendix: Lesson 2
+
+**Data source(s):**
+
+African_countries Shape file
+-   [https://www.geoboundaries.org/downloadCGAZ.html](https://www.geoboundaries.org/downloadCGAZ.html)
+
+Major_cities Shape file
+-   [https://www.naturalearthdata.com/downloads/50m-cultural-vectors/](https://www.naturalearthdata.com/downloads/50m-cultural-vectors/)
+
+Major_roads Shape file 
+-   [https://www.naturalearthdata.com/downloads/10m-cultural-vectors/roads/](https://www.naturalearthdata.com/downloads/10m-cultural-vectors/roads/)
+
+**Citation(s):**
+
+Runfola, D. et al. (2020) geoBoundaries: A global database of political
+administrative boundaries. PLoS ONE 15(4): e0231866.
+[https://doi.org/10.1371/journal.pone.0231866](https://doi.org/10.1371/journal.pone.0231866)
+
+\newpage
+
+## Lesson 3: Layer Management and Properties in QGIS
+
+| Learning Outcomes                    | GIS Concepts          |
+|--------------------------------------|-----------------------|
+| Working with multiple layers         | Layers window   |
+| Symbolysing data                     | Symbology       |
+| Joining spatial and non-spatial data | Attribute Joins |
+| Creating a choropleth map            | classification  |
+
+### Introduction
+
+In the previous tutorial, we learnt how to add vector data to QGIS; however,
+we did not discuss data layer management. When adding spatial data QGIS
+will arrange them in such manner whereby the layers are superimposed on
+top of each other. The order of this is very important. If a **polygon**
+layer is above a **point** or **line** layer can completely mask the
+**points** and **lines**. Similarly, for **polygons** as well, the
+extents of a district can be masked out completely by a higher
+administrative boundary (e.g. state or country-level). See figure below
+which shows the `National_boundary` (beige) and
+`Local_Government_Authorities` (brown) layers completely covered by the
+`State_boundaries` layer (red). The `African_countries` layer (grey) is
+only visible because it is larger than the other layers:
+
+![](images/layer-order-1.png){width="80%"}
+
+In this tutorial, we will strictly be dealing with vector **polygon**
+data. Here, we will focus on effective ways of layer management and
+further ways for modifying the properties of the layers. Further layer
+management includes **attribute joins** to merge spatial and non-spatial
+data. Ultimately, these techniques will lead us to construct an Atlas
+for Nigeria showing the prevelance of poverty across all districts.
+
+If you have not already, please make sure to download and extract the
+corresponding dataset for Lesson 3 from the website. If you are not sure
+how to do this, please follow the instructions from Lesson 2.
+
+### Layer management
+
+Open QGIS Desktop by clicking on the icon and then open a **New
+Project** ![](images/new-project.png){height="20"} for this practical
+session and save it as `Lesson_3.qgz`
+
+Let's begin by adding all at once the following vector layers into the
+**Display** window:
+
+-   `African_countries.shp` (shape file for all countries in Africa)
+
+-   `National_boundary.shp` (shape file for Nigeria's national boundary)
+
+-   `State_boundaries.shp` (shape file for Nigeria's state borders)
+
+-   `Local_Government_Authorities.shp` (shape file for Nigeria's
+    districts)
+
+You can load everything in to the **Display window** by selecting the
+files with extension (*.shp*) by holding the CTRL button on the keyboard
+each time you click on a file:
+
+-   Click **Open Data Source Manager**
+    ![](images/open-data-source-manager.png){height="20"} in the Layer
+    Toolbar. This will bring up a menu called the **Data Source
+    Manager**.
+
+-   The **Data Source Manager** allows you to navigate to the directory
+    and select the data you want to add.
+
+-   You can add many different types of data. Make sure **Vector**
+    ![](images/data-source-manager-vector.png){height="20"} is selected
+    on the left hand side.
+
+-   Click on the **Browse** ![](images/browse.png){height="20"} button
+
+-   Go to the folder where you downloaded and extracted the data for
+    Lesson 3.
+
+-   Select the listed shape files by holding the CTRL button and
+    clicking on each one in turn them. *Make sure to select only files
+    with extensions ending with (.shp).*
+
+Tip: you can filter your window to just shape files by selection **ESRI
+Shapefiles** instead of **All files**.
+
+-   Click on **Open**.
+
+-   Click on the **Add** button to add the shape files into the
+    **Display window**
+
+-   Click **Close** to close the Data Source Manager menu.
+
+![](images/add-vector-layers.png)
+
+The shape files for Africa, and corresponding national and
+administrative borders for Nigeria have been added as a layer - you can
+see this in the **Layers Panel**.
+
+![](images/add-vector-layers-2.png)
+
+Notice, the layers are ordered at random and the colours are also chosen
+at random.
+
+You can inspect the order of the layers by unchecking their tick boxes
+![](images/check-box.png){height="20"} to deactivate them. By checking
+them you will see that the layer showing the African countries covering
+details about the administrative boundaries for Nigeria.
+
+The *ideal* arrangement of these layers are:
+
+-   Local_Government_Authorties.shp
+
+-   State_boundaries.shp
+
+-   National_boundary.shp
+
+-   African_countries.shp
+
+We can manipulate the layers by simply dragging them (up or down) to
+order in the *Layers Panel* (see above).
+
+In theory, this is the ideal arrangement for most layers. However, it is
+not the best arrangement in this case because it stops us knowing which
+**State** each **Local Government Authority (LGA)** belongs to. You can
+zoom to the extents of Nigeria see this notion:
+
+-   Click on the *Local_Government_Authority* layer in the Layer Panel
+    to highlight it
+
+-   Click on the **Zoom To Layer**
+    ![](images/zoom-to-layer.png){height="20"} *(two to the left of Zoom
+    Full)* to zoom in to the extent of *Local_Government_Authority*.
+
+![](images/zoom-to-later-toolbar.png){width="40%"}
+
+*An alternative method is to right-click on the
+Local_Government_Authority layer in the Layer Panel and choose Zoom to
+Layer(s).*
+
+In order to show the States without entirely covering the LGAs - we will
+need to first superimpose and make this the topmost layer and then
+manipulate its layer properties by rendering it transparent:
+
+-   Drag the *State_boundaries* shape file in the Layers Panel to the
+    top
+
+-   Next, right-click on the *State_boundaries* and select
+    **Properties** to access the **Layer Properties** menu
+
+-   Select **Symbology** on the left-hand side of the Layer Properties
+    menu
+
+-   Select **Simple Fill** in the which is located in the top white box
+    on the right-hand side of the Layer Properties menu
+
+-   We want to change two parameters: **Fill style** and **Stroke
+    width** (i.e. line thickness). In the **Fill style** select **No
+    Brush** to render polygons transparent. Change the *Stroke width* by
+    typing 0.66 (in mm). *You can also use the up/down icon arrows to
+    adjust the value.*
+
+::: callout-note
+**Important**: the first action will let us see through the areas of the
+State polygons so as to visualise the LGAs while enabling us to
+visualise its borders as well. The second action will help us
+distinguish between the borders.
+:::
+
+-   Click **OK**.
+
+![](images/layer-properities-no-fill.png)
+
+Repeat the above steps for Nigeria's national borders
+(`National_boundary`) by making this the topmost layer and applying the
+following changes: **Fill style** as **No Brush** and **Stroke width**
+as **0.86** (mm).
+
+Finally, lets add this change to the `Local_Government_Authorities`
+layer: **Stroke width as 0.16 (mm)**.
+
+The resulting layer should be as follows:
+
+![](images/nigeria-map-1.png)
+
+This is the best arrangement for these type of vector layers. Let us add
+some final touches by adding the colour of the sea, and changing the
+Fill colours for the LGAs and Africa countries using Light Grey and Dark
+Grey, respectively. Do you recall the steps used in Lesson 2?
+
+![](images/nigeria-map-2.png)
+
+Nice! We have established a good template to which we can construct our
+showing levels of poverty. Now is great time to save our progress for
+this project by clicking on the **Save** icon
+![](images/save.png){height="20"}
+
+### Importing non-spatial data and performing attribute joins
+
+We have provided a non-spatial data as an Excel spreadsheet, saved in
+CSV format (Comma Separated Values) which contains LGA-level prevalence
+of poverty in 2014 (the fraction of population living in poverty as
+defined by \$1.40 a day in 2010 prices). *The data are from the FAO,
+part of the UN. See Appendix for details.*
+
+We can import this in the following steps:
+
+-   Click **Open Data Source Manager**
+    ![](images/open-data-source-manager.png){height="20"} in the Layer
+    Toolbar.
+
+-   Click on the **Delimited Text** entry on the left
+    ![](images/data-source-manager-delimited-text.png){height="20"} and
+    search for data set by clicking on Browse button
+    ![](images/browse.png){height="20"}.
+
+-   Select the Excel sheet (.csv) `nigeria_2014_poverty-admin-2.csv` and
+    click **Open**.
+
+-   Under **File Format**, select the **CSV** (comma separated values)
+    option to tell QGIS we are importing data in CSV format.
+
+-   Expand the **Record and fields** options and make sure the section
+    **First record has field names** is checked. Here, we are telling
+    QGIS that the file has column names.
+
+-   Expand the **Geometry Definition** and make sure **No geometry
+    (attribute only table)** is checked. Here, we are telling QGIS that
+    this is a non-spatial dataset.
+
+-   Click on **Add** and **Close**.
+
+![](images/add-delimited-text-file.png)
+
+The imported data will appear as an attribute table in the **Layers
+Panel**.
+
+![](images/add-delimited-text-file-layers-panel.png){width="60%"}
+
+QGIS allows the user to access the attribute tables of both spatial and
+non-spatial data. To see the contents to the imported data -- you can
+simply right-click on `nigeria_2014_poverty-admin-2` in the Layers Panel
+and select **Open Attribute Table**. You can see that the data contains
+five fields:
+
+-   **GID_2**: Unique identification code for LGAs
+
+-   **State**: The name of the state that the LGA falls in in Nigeria
+
+-   **LGA**: The name of the LGA in Nigeria
+
+-   **Poverty**: Estimated levels (or prevalence) of poverty in a LGA
+
+-   **Population_2014**: Overall number of people in a LGA at 2014
+
+-   **Poverty_Rate**: The proportion of the total population who live in
+    poverty
+
+-   **Poverty_Count_2014**: Estimated number of people living in poverty
+    in 2014 (below \$1.40 a day)
+
+![](images/poverty-attribute-table.png)
+
+We want to map the field **Poverty**; however, we cannot do much with
+this attribute table unless we merge it with some other spatial data.
+Now, open the **attribute table** for the LGA layer by right clicking on
+`Local_Government_Authorities` and selecting Open Attribute Table. You
+can see this also contains five fields:
+
+-   **ISO3**: A three-digit unique identification for a country
+
+-   **Country**: The name country of the LGAs
+
+-   **States**: The names of the Nigerian state the LGA is in
+
+-   **LGA_ID**: Unique identification code for LGAs
+
+-   **Districts**: The name of the LGA in Nigeria
+
+-   **Alt-Name**: An alternative name for the LGA
+
+![](images/lga-attribute-table.png)
+
+We can merge the attribute table (i.e., `nigeria_2014_poverty-admin-2`)
+with our spatial data (i.e. `Local_Government_Authorities`) using the
+common field, `GID_2` and `LGA_ID`. This is called an *Attribute Join*.
+
+-   Right-click on `Local_Government_Authorities` and select
+    **Properties** to access its **Layer Properties** menu
+
+-   On the left-hand side of the Layer Properties menu select **Joins**
+    ![](images/attribute-table-joins.png){height="20"}
+
+-   Click on the green plus sign ![](images/plus.png){height="20"} to
+    choose the layer you wish to join with
+    `Local_Government_Authorities`
+
+-   Another menu called **Add Vector Join** will appear. Under **Join
+    layer** select the attribute table `nigeria_2014_poverty-admin-2`
+
+-   Next, under **Join field** select `GID_2`. *Here, we are telling
+    QGIS that we want to use the field `GID_2` from
+    `nigeria_2014_poverty-admin-2` as our joining field*.
+
+-   Under **Target field** select LGA_ID. *Here, we are telling QGIS
+    that we want to use `LGA_ID` from `Local_Government_Authorities` as
+    our target field.*
+
+-   Check the tick box for **Custom field name prefix** and expand this
+    section. Place an underscore '\_' in the space.
+
+-   Click **OK** on the Add Vector Join menu.
+
+-   Click **OK**.
+
+![](images/add-vector-join.png)
+
+Open the **attribute table** of `Local_Government_Authorities` to view
+it contents. As you can see, the join has linked the two datasets. Now,
+let's save this new spatial dataset as a shape file and name as
+`LGA_Poverty_Prevalence_2014.shp`.
+
+You can do this by:
+
+-   Right-clicking on **Local_Government_Authorities** and selecting
+    **Export**, and then **Save Features as...**
+
+-   The **Save Vector Layer as...** menu will appear. Under **Format**
+    select **ESRI Shapefile**
+
+-   Under **File name**, click on the browse
+    ![](images/browse.png){height="20"} button and select the
+    destination to save your shape file. Here, name it as
+    `LGA_Poverty_Prevalence_2014.shp`
+
+-   Make sure the **Coordinate Reference System (CRS)** is set to
+    `EPSG:4326 - WGS84`
+
+-   Make sure the **Add saved file to map** is checked
+
+-   Click **OK**
+
+![](images/save-vector-layer-as.png)
+
+This should add new shape file containing our estimates to Layers Panel.
+We have a quite a lot data layers in QGIS. We are now in the position to
+construct our poverty maps in the Display window.
+
+### Map construction
+
+We can generate a map showing the distribution of poverty in Nigeria.
+The steps are as follows:
+
+-   Right-click on the `LGA_Poverty_Prevalence_2014` layer and select
+    **Properties** to access its **Layer Properties** menu
+
+-   On the left-hand side of the Layer Properties menu select
+    **Symbology** tab and at the topmost section of the menu select
+    **Graduated**
+
+-   We want to display the Poverty Rate. In **Value** select the field
+    name `_Poverty_R`
+
+-   In **Colour ramp**, click the arrow
+    ![](images/down-arrow.png){height="20"} to expand the selection of
+    colours. Choose **All Color Ramps** and then choose **OrRd**.
+
+\*There are lots of pros and cons to different colour selections.
+Traditionally one shade, going from light to dark is a good choice for
+choropleth maps like this one. Usually, darker colours represent higher
+values and lighter colours represent lower values. Color Brewer
+(https://colorbrewer2.org/) is a great website which discusses colour
+choices, and if you want more details have a look at [Brewer et al. (2013)](https://www.tandfonline.com/doi/abs/10.1559/152304003100010929).
+
+-   In **Mode**, you can specify the method for which classes are
+    generated (i.e. equal interval, equal count, natural breaks,
+    standard deviation or pretty breaks). For this example -- select
+    **Natural Breaks (Jenks)** and type **7** in Classes to generate
+    seven groups
+
+-   Click **OK**
+
+![](images/symbology-choropleth-map.png)
+
+The resulting map should be as follows:
+
+![](images/poverty-map.png)
+
+You can see the LGA level prevalence of poverty in 2014 are represented
+as a legend under layer `LGA_Poverty_Prevalence_2014` with the lowest
+intensity represented by very pale red and highest as dark reds.
+
+Now that we are done constructing our Atlas, we can end this project by
+saving it -- click on the save icon ![](images/save.png){height="20"} to
+save and overwrite `Lesson_3.qgz`.
+
+### Summary
+
+We constructed a basic Atlas showing the LGA prevalence of poverty in
+Nigeria. We learnt some steps on how to manage layers to get the best
+arrangement for optimal visualisation. We have done further layer
+manipulation of layer properties and symbology. Finally, we conducted
+attribute joining of both spatial and non-spatial data sets.
+
+So far, we have only constructed our maps in the Display window. The
+next step is to learn how to create high quality publication style maps
+in QGIS' Print Layout -- this is useful especially if one needs to
+create maps for articles or share results with other stakeholders or
+researchers.
+
+### Appendix: Lesson 3
+
+**Data source(s):**
+
+African_countries Shape file
+- [https://www.geoboundaries.org/downloadCGAZ.html](https://www.geoboundaries.org/downloadCGAZ.html)
+
+States_boundaries Shape file
+- [https://gadm.org/download_country_v3.html](https://gadm.org/download_country_v3.html)
+
+Local_Government_Authorities Shape file
+- [https://gadm.org/download_country_v3.html](https://gadm.org/download_country_v3.html)
+
+Poverty Data
+- [https://data.apps.fao.org/catalog/dataset/poverty-map-nigeria-2014](https://data.apps.fao.org/catalog/dataset/poverty-map-nigeria-2014)
+
+**Citation(s):**
+
+Brewer, Cynthia A., Hatchard, Geoffrey W. & Harrower Mark A.  (2003) ColorBrewer in Print: A Catalog of Color Schemes for Maps, Cartography and Geographic Information Science, 30:1, 5-32, [https://doi.org/10.1559/152304003100010929](https://doi.org/10.1559/152304003100010929)
+
+Runfola, D. et al. (2020) geoBoundaries: A global database of political
+administrative boundaries. PLoS ONE 15(4): e0231866.
+[https://doi.org/10.1371/journal.pone.0231866](https://doi.org/10.1559/152304003100010929)
+
+\newpage
+
+## Lesson 4: Visualisation using Print Layout in QGIS
+
+| Learning Outcomes                         | GIS Concepts            |
+|-------------------------------------------|-------------------------|
+| Create a publication ready map            | Print layout tool (p37) |
+| Understand why scale & size are important | Scale bar (p42)         |
+| Adding a north arrow                      | North arrow (p44)       |
+| Showing context to the map reader         | Inset maps (p45)        |
+| Explaining symbology                      | Legends (p49)           |
+
+### Introduction
+
+Up until this point, we have focused on working with different layers,
+layer arrangement and the creation of the atlas in the Display window of
+QGIS. This is fine to look at data, but QGIS has a much more flexible
+and useful tool for creating maps - the Print Layout tool. This allows
+you to add legends, scale bars, titles, inset map and many other things
+that you need to create a professional map. You can then export this as
+an image or print it out - ready for inserting into a report, article or
+sharing as a stand alone map.
+
+Here is an example of a completed map in print layout:
+
+![](images/helminths-map.png){width="80%"}
+
+This is an example of an epidemiological map showing details of the
+endemicity status of soil transmitted health infections (an intestinal
+parasitic worm) in local areas of Nigeria. Can you spot all the
+important features and finishing touches for this map?
+
+*Map from: Expanded Special Project for Elimination of Neglected
+Tropical Diseases (ESPEN) (http://espen.afro.who.int/countries/nigeria)*
+
+Take a look carefully at the image below. We have highlighted all the
+essential features that should be included in a completed map.
+
+![](images/helminths-map-labelled.png){width="80%"}
+
+1.  Map title
+2.  Legend
+3.  Map inset
+4.  North Arrow and Map scale
+5.  Map canvas
+
+Remember we constructed an atlas in lesson 3 which showed the LGA
+prevalence of poverty in Nigeria. This lesson continues from where we
+left off in lesson 3. We are going to use the Print Layout tool to apply
+the finishing touches and create a printable map for dissemination.
+
+#### Prerequisites
+
+To attempt lesson 4, you need to have downloaded the data sets for
+lesson 3 and gone through this entire manual to have produced the
+following map (see below):
+
+![](images/lesson-3-map.png){width="60%"}
+
+You will need to have saved your progress as a project and named it as
+`lesson_3.qgz`
+
+We are going to load it for this session. To load the last (or open an
+existing) project -- open QGIS Desktop and click on the Open Project
+folder icon ![](images/open-project.png){height="20"} located in the
+menu toolbar. Navigate to the file's location and open `lesson_3.qgz`.
+
+Make sure you have the resulting map `LGA_Poverty_Prevalence_2014` open.
+
+We are starting a new lesson, so save your project as a new file.
+
+-   Click **Project** \> **Save As...**
+
+-   Name the file `lesson_4.qgz` and save it somewhere you can find it.
+
+### Opening Print Layout tool in QGIS
+
+There are two ways to open the Print Layout tool in QGIS. The first and
+quickest approach is for you to click on the **New Print Layout**
+![](images/new-print-layout.png){height="20"} located on the menu's
+toolbar. The alternative way is to click on the Project menu, then click
+**New Print Layout**.
+
+![](images/open-print-layout.png)
+
+You will be greeted with a small window **Create Print Layout** which
+asks you to enter a unique title for the print layout title. Type in
+this text `Prevalence of poverty in Nigeria (2014)` and click **OK** to
+open the Print Layout window.
+
+![](images/create-print-layout.png)
+
+\newpage
+
+The image below provides a quick overview of the layout in Print Layout
+(sections are labelled):
+
+![](images/print-layout-window.png)
+
+The main section of the Print Layout window is the **Map Canvas** - this
+is where we will create our map.
+
+On the left-hand side of the Print Layout window is the **Print Layout
+toolbar**. This section allows us to add the information we need to
+create our publication style map.
+
+When using this tool you will always be working between the **Print
+Layout toolbar** and the **Layout & Item Properties** tabs (located on
+the right-hand side of the panel). The latter is used to make further
+alterations to the properties of the map.
+
+### Adding the current map from the Display window to Print Layout
+
+The **Print layout toolbar**, with the commonly used tools labeled:
+
+![](images/print-layout-toolbar.png)
+
+-   To add the current map from the Display window to Print Layout --
+    click on the **Add Map** ![](images/add-new-map.png){height="20"} to
+    the layout icon located on the left-hand side in the **Print Layout
+    toolbar**.
+
+-   Click and drag the crosshair cursor on to the map canvas to draw
+    outline of a quadrilateral on map canvas (see image below).
+
+![](images/add-new-map-drag.png)
+
+-   The image will appear when the crosshair cursor is released. When we
+    want to optimise the appearance of our image, we can drag the image
+    to the bottom, left-hand corner of the map canvas, as well as expand
+    its area a bit by dragging its top-right corner.
+
+![](images/resize-map.png)
+
+-   We can move the contents as well, and zoom in & out to the image by
+    clicking on the **Move item content** icon
+    ![](images/move-item-content.png){height="20"} and dragging the map
+    of Nigeria to match approximatley what is shown on screen. To
+    zoom-in (or out) gradually -- move the cursor on top the image and
+    hold the CRTL key and scroll with you mouse wheel upwards to
+    zoom-in, or scroll downwards to zoom-out.
+
+::: callout-note
+**Remember**
+
+The **Select/Move Item** tool
+![](images/select-move-item.png){height="20"} and the **Move Item
+Content** tool ![](images/move-item-content.png){height="20"} are
+different. The **Select/Move Item** tool allows you to move items around
+on your piece of paper (including the map, legend, etc.). The **Move
+Item Content** tool allows you to move the map around within the box.
+Try out both tools, and make sure you are happy with the differences.
+:::
+
+::: callout-warning
+**Now -- this is a very important step! We have to lock the image in
+place otherwise, any changes done in the Display window will be
+reflected in the Print Layout.**
+:::
+
+This can be done in the **Print Manager** section on the right-hand side
+panel. Here, you will see four tabs labelled as **Layout, Item
+Properties, Guides and Atlas**. Layout and Item Properties are the key
+ones we will be using in this work. Click on **Items Properties** and
+follow these steps:
+
+-   Under **Layers** check the tick box for **Lock layers**, and then
+    check the tick box for **Lock styles for layers** as well
+
+![](images/lock-layers-map.png)
+
+-   Scroll down in **Item Properties** and mark the tick box for
+    **Frame** to apply borders around the map (default colour: black).
+    You can choose to increase line's thickness to 0.40 mm.
+
+-   To lock out edits, so we don't mistakenly edit them later on, we can
+    lock the item. On the top right, there is a panel called **Items**.
+    This lists features added to the map canvas -- right now, we only
+    have the map of Nigeria which is called **Map 1**. Click on the tick
+    box of Map 1 (under the padlock symbol) to lock the edits.
+
+![](images/lock-edits.png)
+
+### Adding a scale bar
+
+It is good practice to always add a scale bar to a map - this provides
+the reader a visualise indication of the size the feature, as well as
+the distance between features on map. This is particularly important if
+the person likely to be reading the map is not familiar with the area. A
+scale bar allows them to know how large different features are. There
+are various different styles of scale bar, and we are using one which is
+a line, with the distance shown with vertical lines.
+
+To add a scale bar:
+
+-   Click on the **Add Scale Bar**
+    ![](images/add-new-scale-bar.png){height="20"} icon.
+
+-   Once the icon is clicked - move the crosshair cursor anywhere on to
+    map canvas and click it.
+
+-   This should bring the **New Items Properties** menu. Just click
+    **OK** to proceed.
+
+-   The scale bar will be added to the map canvas. We can crop away any
+    extraneous areas by simply dragging the bottom upwards to fix the
+    size of scale bar (see image below).
+
+![](images/crop-scale-bar.png)
+
+We going make some edits to the scale bar - first, we want it to be
+positioned at the bottom-left corner inside the map of Nigeria. Also, we
+want the scale bar to appear as a line with upwards ticks, and finally,
+we need to ensure that the scales are linked with the map of Nigeria.
+*See the example map at the beginning to see what we want to end up
+with.*
+
+-   Drag the scale bar to the bottom-left corner of the map
+
+-   For the scale bar go into its **Item Properties** and under **Main
+    Properties** - **Map** should be set to **Map 1**. This means that
+    the dimensions on the scale bar will correspond to what's on **Map
+    1**. **Style** should be set to **Line Ticks Up**.
+
+-   Under **Segment** settings - change the way the scale is split: it
+    should read **left 0** and **right 2**.
+
+-   In the **Items** panel, click on the check box of <Scale bar> to
+    finalise edits and lock it.
+
+![](images/add-scale-bar-screenshot.png)
+
+### Adding a north arrow (or compass)
+
+Similarly, it is always good practice to add a north arrow (or a
+compass) to a map -- this feature enables the reader to have a bearings
+of direction in which features are facing on a map.
+
+To add an arrow (or a compass):
+
+-   Click on the **Add North Arrow**
+    ![](images/add-north-arrow.png){height="20"}
+
+-   Again, once the icon is clicked -- move the crosshair cursor
+    anywhere on to map canvas a click it. This should bring the **New
+    Items Properties** menu. Just click **OK** to proceed.
+
+-   A north arrow will be added to the map canvas. Go into its **Item
+    Properties** and under **Main Properties** -- change the
+    **Placement** to **Middle**.
+
+-   Under **SVG Parameters** -- change the **Fill colour** settings to
+    **Black**.
+
+-   Crop the image to size by dragging inwards one (or any) of the
+    corners to a suitable size. The placement for this compass at the
+    top-left corner inside the map of Nigeria (see image below).
+
+-   In the **Items** panel, click on the check box of <Picture> to
+    finalise edits and lock it.
+
+![](images/add-north-arrow-screenshot.png)
+
+::: callout-note
+**Tip**
+
+If you need to adjust the map, north arrow or scale bar location you
+can. Remember the instructions from earlier in this lesson when we
+discussed the **Select/Move Item** tool and the **Move item content**
+tool (p.43).
+:::
+
+### Adding a inset map
+
+A inset map is another important feature in a map. It is a supporting
+map feature alongside our parent map (i.e. Nigeria). Insets are
+typically displayed at a higher scale showing a much broader view of the
+study area.
+
+For instance, the epidemiological map shown earlier (see page 36)
+features a map inset which has Africa as a supporting map showing where
+Nigeria is in Africa. This is very useful, particularly for readers who
+might want to get an understanding of where the study location is in the
+world.
+
+-   We can add our map inset to bottom-right corner of the map canvas to
+    show the whole of Africa by clicking on the **Add Map**
+    ![](images/add-new-map.png){height="20"} and drawing the outline to
+    fit in the corner.
+
+-   Notice it has added Nigeria again - this is because it is the main
+    layer active in our **Layers Panel**.
+
+-   **DO NOT CLOSE LAYOUT WINDOW** - just open the main QGIS window and
+    go to the **Layers Panel**.
+
+-   In the Layers Panel deactivate the following by unmarking their tick
+    boxes beside them: `National_boundary`, `States_boundaries`,
+    `LGA_Poverty_Prevalence_2014` and `Local_Government_Authorities`.
+
+-   Leave `African_countries` active by not unchecking its tick box.
+
+-   Click on African_countries in the **Layers Panel** to highlight
+    selection and then click on the **Zoom to Layer**
+    ![](images/zoom-to-layer.png){height="20"} icon to show its full
+    extent.
+
+![](images/main-qgis-window.png)
+
+-   Now, return to the Layout window.
+
+-   We can update the image to what's displayed on the Display window by
+    going into the **Item Properties** menu (make sure **Map 2** is
+    displayed) and clicking on the button **Set Map Extent to Match Main
+    Canvas Extent**
+    ![](images/set-to-map-canvas-extent-icon.png){height="20"}.
+
+![](images/set-to-map-canvas-extent.png){width="50%"}
+
+-   Again, we can move the contents, and zoom in & out of the image by
+    clicking on the **Move item content** icon
+    ![](images/move-item-content.png){height="20"} and dragging the map
+    of Africa to place. Let's zoom-in (or out) gradually for Africa to
+    fit the window. You can move the cursor to the image and hold the
+    CRTL key and scroll with the scroll wheel on your mouse upwards to
+    zoom-in, or scroll downwards to zoom-out.
+
+**You might notice that the main map changes the layers visible as
+well - don't worry, this is fine and we will fix this later on.**
+
+-   We are going to link our map inset (i.e. Map 2) with the Nigeria
+    image (i.e. Map 1).
+
+-   Make sure you have **Map 2** selected.
+
+-   Scroll further down in **Item Properties** and expand the option
+    **Overviews**. Click on the **Green Plus**
+    ![](images/plus.png){height="20"} sign to add an overview -- this
+    will be displayed as **Overview 1** in the textbox.
+
+-   Click on the settings **Map frame** tab and select **Map 1**. This
+    action will link Map 1 to the map inset which is named as **Map 2**
+    in the Items panel. You can see a red show of colour highlighting
+    the extent of Map 1 in our map inset.
+
+We have completed our map inset; let's add some final touches to it.
+
+-   Scroll down in **Item Properties** and mark the tick box for
+    **Frame** to apply borders around the map inset (default colour:
+    black). You can choose to increase the line's thickness to 0.40 mm.
+
+-   In the **Item Properties** and under **Layers** check the tick box
+    for Lock layers, and then check the tick box for Lock styles for
+    layers. This action will lock the image of Africa.
+
+![](images/overview-map.png){width="80%"}
+
+-   Finally, to complete edits for our added map inset -- click on the
+    tick box of Map 2 in the **Items** panel.
+
+::: callout-note
+If the layers in your main map have changed, you forgot to do the **Lock
+layers** section earlier. Do not worry! Follow these steps to change the
+layers back:
+
+-   Go back to the main QGIS window and turn back on
+    `National_boundary`, `States_boundaries`,
+    `LGA_Poverty_Prevalence_2014` and `Local_Government_Authorities`
+    layers.
+
+-   Return to the Layout window.
+
+-   Select **Map 1** in the **Items** panel. You need to unlock it to be
+    able to do this.
+
+-   Click **Refresh** ![](images/refresh.png){height="20"} to get QGIS
+    to check what layers are visible. If you are happy with the layers
+    shown, click **Lock layers** and then lock **Map 1**.
+:::
+
+![](images/lock-layers.png){width="50%"}
+
+### Adding Legends
+
+It is always a good idea to include a key or legend in your map to
+explain whichever geographical phenomenon your map is showing.
+
+Here, we are showing the distribution of poverty at LGA-level across
+Nigeria. We can add our legends in the following steps:
+
+-   Click on the **Add Legend** ![](images/add-legend.png){height="20"}
+    icon.
+
+-   Again, once the icon is clicked -- move the crosshair cursor
+    anywhere on to the map canvas and click. This should bring the **New
+    Items Properties** menu. Click **OK** to proceed.
+
+-   This will add the legend to our template. This will also appear as
+    **Legend** in the list of items in the **Items** panel. Drag the
+    legends into position beside Map 1 and above Map 2.
+
+-   In the Items Properties, under Legend items untick **Auto Update**
+    ![](images/auto-update.png){height="20"}.
+
+::: callout-note
+**Tip**: Auto-Update links the layer names in the main QGIS window to
+the layer names in the legend. This can be really useful when you are
+creating your map, but quite unhelpful when you are finalising your map.
+As we want to change the layer names in the legend, we need to untick
+this.
+:::
+
+-   We only want include the main layer with the colour ramps (i.e.
+    `LGA_Poverty_Prevalence_2014`) in the legend. We can remove
+    everything else by selecting them and then clicking on the Red Minus
+    ![](images/minus.png){height="20"} button.
+
+-   Change the title's subheading **LGA_Poverty_Prevalence_2014** to
+    **Prevalence of poverty (%)** by double-clicking on the subheading
+    "LGA_Poverty_Prevalence_2014" in the **Legend items**. A **Legend**
+    item properties menu will appear -- type in the textbox "Prevalence
+    of poverty (%)" and then click the back arrow to save the changes.
+
+![](images/legend-item-properities.png)
+
+-   We also need to tidy up the data categories. Remember that these are
+    rates (i.e. vary between 0 and 1) and we would like percentages, so
+    we need to multiply them by 100. Equally the decimal place on the
+    values (i.e. 11.6%) isn't really needed, so we can round to whole
+    percentages (i.e. 12%). Finally, we need to be clear on what the
+    boundaries are so we know whther a data point is in one category or
+    the other. Click on each legend entry in turn, and update it:
+
+| **Old value** | **New value** |
+|---------------|---------------|
+| 0.005 - 0.116 | \< 12         |
+| 0.116 - 0.214 | 12 - 21       |
+| 0.214 - 0.32  | 22 - 32       |
+| 0.32 - 0.428  | 33 - 42       |
+| 0.428 - 0.532 | 43 - 53       |
+| 0.532 - 0.664 | 54 - 66       |
+| 0.664 - 0.914 | \> 66         |
+
+-   Finally, to complete edits for our legends -- click on the tick box
+    of Legend in the Items panel to lock our changes.
+
+### Adding a title
+
+We can place a title at the top:
+
+-   Click on the **Add Label** ![](images/add-label.png){height="20"}
+    and draw an area at full length of the map canvas.
+
+-   Before we add text -- In the **Item Properties**: let's give it a
+    Background colour of **Deep Blue** and choose its **Frame** colour
+    to be **Black**. Check the tick boxes for **Frame** and
+    **Background** and select the colours **Black** and **Deep Blue**,
+    respectively.
+
+-   Under **Appearance** setting: check the following for **Horizontal
+    alignment** and **Vertical alignment** as **Centre** and **Middle**,
+    respectively.
+
+-   Scrolling to the top of **Item Properties** menu -- there is a
+    textbox under **Main Properties**. The current heading "Lorem
+    ipsum". Change this by typing "Prevalence of residents living in
+    poverty (i.e. \<\$1.26 a day) in Nigeria (2014)".
+
+-   The font size is very small. Click on the **Font** drop down menu
+    under the **Appearance** settings, and a Text Format menu will
+    appear -- here, under **Font style** select **Bold** and choose
+    **20** as the text **size**. Click **OK**.
+
+-   Finally, to complete edits for title -- click on the tick box for
+    the title in the **Items** panel.
+
+-   We have completed the construction of the map in Print Layout -- we
+    can choose to export the map as an image, SVG or document. Export it
+    as a PNG image by chooing the first export icon:
+
+![](images/map-export-png.png)
+
+The final map should be as follows:
+
+![](images/Prevalence%20of%20poverty%20in%20Nigeria%20(2014).png)
+
+### Summary
+
+We learned the basic features in a map composition and how to construct
+a map that is publication worthy. The next set of tutorials will be
+focused more on techniques on data management and spatial analyses --
+these will typically include analysis of aggregated data and various
+spatial interpolation approaches.
+
+Lessons 1, 2, 3 and 4 are prerequisites for lessons 5 and 6.
+
+\newpage
+
+## Lesson 5: Visualising spatial patterns in aggregated health data in QGIS
+
+| Learning Outcomes                        | GIS Concepts                      |
+|------------------------------------------|-----------------------------------|
+| Add point data with coordinates          | Delimited Text (p56)              |
+| Join data based on spatial location      | Join attributes by location (p58) |
+| Aggregate raster data by vector polygons | Zonal Statistics (p66)            |
+| Calculating at risk population           | Field Calculator (p67)            |
+
+### Introduction
+
+A key step in most epidemiological analyses from a geographic context is to visualise the spatial patterns of infectious or non-communicable diseases. This allows for an examination of any spatial trends that might be present as well as the generation of hypotheses about factors that may influence the observed patterns. Visualisation is an important facet for communicating the findings to the target audience such as community health workers, public health officials and stakeholders who may use these maps to make decisions on how treatments and intervention are allocated to populations at risk.
+
+Here, we will visualise data from a Schistosomiasis (Schistosoma mansoni) baseline survey from 1998 testing sites in Uganda to explore the spatial distribution in the prevalence of infection to produce a map to support monitoring and evaluation of the national community-based deworming programme.
+
+To construct a district-level map showing the rates of Helminths
+ - you will need to perform spatial aggregation of reports to obtain overall reported numbers of positive cases within a
+district. Secondly, to better understand the population at risk, we will calculate the rate of cases by dividing the number of cases by the population. 
+
+This tutorial will provide a step-by-step guide for conducting such
+spatial analysis in QGIS.
+
+#### Prerequisites
+
+To attempt lesson 5, you need to have completed lessons 1, 2, 3 and 4.
+We will be staring a new project, but it is assumed that you know how
+to add, import and save spatial data, understand spatial layer
+management, as well as knowing how to use Print Layout tool.
+
+### Downloading data
+
+As we did for the previous lessons, please make sure you have downloaded
+data for Lesson 5: `lesson-5-data.zip` from the website and extract it.
+You should have 14 files.
+
+### Load the required vector files in QGIS
+
+The following shapefiles should be added into the Layers Panel in QGIS:
+
+-   `African_countries.shp` (contains all African countries)
+-   `Health_districts.shp` (the health district boundaries of Uganda)
+
+Do you recall in previous tutorials where we gave tips on the best ways
+for arranging vector layers in the Layers Panel?
+
+Arrange the layers in this order and apply the following changes via
+their **Symbology** settings in the **Layer Properties** menu:
+
+-   `Health_districts` (Fill colour: **Light Grey**; Stroke width =
+    **0.16 mm**)
+-   `African_countries` (Fill colour: **Dark Grey**)
+
+The map in the Display window should be as follows:
+
+![](images/uganda-boundaries.png){width="80%"}
+
+::: callout-note
+**Tip:** You might wonder what is going on in the south-east corner of Uganda. The country boundary ends in a fairly square border, but the health districts do not cover this area completely. Add in an OpenStreetMap base map to see why this is. This is because this is part of Lake Victoria. Odd things like this can happen when dealing with boundaries over bodies of water - which is then arguably compounded when colonial powers divide up land by drawing straight lines on maps with no regard to how the land is already divided or used. From our point of view the national boundary makes sense, but with regard to health districts, this makes less sense as there are no people living in the body of water - apart from on the various islands which are shown. We have to live with it and symbolise it as best we can. Have a look at other maps of Uganda to see how they have dealt with this issue. 
+:::
+
+
+### Importing spatial and victimisation dataset
+
+The following CSV dataset can be imported into QGIS:
+
+-   `Uganda Helminths point data.csv` (CSV file of Helminths testing data)
+
+::: callout-note
+**Tip:** This is a CSV file, and can be opened in Excel. Have
+a look at it in Excel and see how the data are organised.
+:::
+
+The `Uganda Helminths point data.csv` is a spreadsheet and can be made into
+spatial data because it contains coordinates of the locations of the
+police stations. Therefore when importing it, we need to declare which
+fields correspond to longitude and latitude. You can do this by:
+
+-   Click on the **Open Data Source Manager**
+    ![](images/open-data-source-manager.png){height="20"} icon in the
+    Layer Toolbar.
+
+-   Select **Delimited Text** on the left hand side.
+
+-   Click browse ![](images/browse.png){height="20"} and select
+    `Uganda Helminths point data.csv`.
+
+-   Under **File Format** choose **CSV (comma separated values)**.
+
+-   Under **Record and Field Options** -- make sure **First record has field names** is checked to retain the name of the columns.
+
+-   Under **Geometry Definition** -- make sure the **Point coordinates**
+    option is checked.
+
+-   Here, you also need to tell QGIS that the **X** field corresponds
+    with `longitude` and **Y** field corresponds with `latitude`.
+
+-   Make sure **Geometry CRS** is set to **ESPG:4326 - WGS 84**.
+
+-   Double-check that the **Sample Data** looks like the image below.
+
+-   Click **Add** to import data to the Layers Panel, and then click **Close**. 
+
+![](images/add-delimited-text-file-coords.png){width="60%"}
+
+
+The Display window should look something like this:
+
+![](images/added-data.png){width="60%"}
+
+The points on the image correspond to the geographical positions of the
+data points in Uganda. At the moment, it only exists as a
+temporary file in memory as an imported csv file.
+
+We can save these data permanently as a point shapefile by following
+these steps:
+
+-   Right-click on the layer `Uganda Helminths point data` in the Layers Panel
+-   Click on **Export \> Save Features As...** to open the **Save Vector Layer as...** menu.
+-   Under **Format** select **ESRI Shapefile**.
+-   Click Browse ![](images/browse.png){height="20"} and select the
+    location where you want to save the data.
+-   Type in the name `Uganda Helminths point data` and click **Save**.
+-   Check that the **CRS** (coordinate reference system) is set to
+    **EPSG:4326 - WGS 84**.
+-   Make sure that the checkbox **Add saved file to map** is checked.
+-   Click **OK** to finish saving the data.
+-   Remove the original `Uganda Helminths point data` from the Layers Panel.
+
+![](images/save-vector-layer-as-health.png){width="60%"}
+
+### Aggregation of point spatial data to polygon
+
+Currently we have the point Helminths data. There are many different ways we could use this data now. for example, we could use the points to produce a point map showing the number of reported cases of Helminths:
+
+-   Right-click on the `Uganda Helminths point data` layer and select
+    **Properties** to access its **Layer Properties** menu.
+-   Choose the **Symbology** tab on the left-hand side of the menu and
+    select **Graduated** on the topmost selection bar.
+-   We want to display the prevlance of Helminths. In **Value** select the field
+    name `sth_prevla`.
+-   In **Colour ramp**, under **All Color Ramps**, select the colours
+    **YlOrRd**.
+-   You can specify the classification method (equal, quantile, natural
+    breaks, standard deviation or pretty breaks) for generating sets of
+    intervals. For this example -- select **Natural Breaks (Jenks)** and
+    type `7` in **Classes** to generate seven intervals.
+-   Click **Apply** and **OK**.
+
+![](images/symbology-choropleth-map-health.png)
+
+As you can see, there are some obvious spatial patterns in the number
+of reported cases, and through visual inspection, there may be
+evidence of clustering. However, this map lacks any epidemiological
+rigorousness and interest due to the fact that it just total numbers of
+cases recorded for each area.
+
+For comparability, we could choose to aggregate the points by health district
+in order to know the overall prevlance of Helminths cases that have occurred
+within a district. We can also then work out the total population at risk by multiplying the prevlance by the population. 
+
+To do this calculation, we will need Uganda's population census
+data for 2020. What is available is population counts gridded at a
+resolution of 100m (derived from WorldPop data). Using the district
+vector layers (i.e. `health_districts`) -- we will generate two shape
+files:
+
+1.  A shape file containing the aggregated counts of Helminths within each
+    health district.
+2.  A shape file containing the estimated population size of 2020 within
+    each district.
+
+The final steps will include merging the two layers before calculating
+the population at risk.
+
+### Aggregation of point data to health districts
+
+Currently we have the point Helminths data overlaid on the health boundaries. It's worth looking at the point data attribute table. We want to aggregate this to the health districts to create a choropleth map. If you look closely at the data, you may notice that on the point data, as well as their coordinates (which we used to plot them on the map) we also have the health district listed - under `iu_id_sour`. This matches the health district listed in the `Health_Districts` layer under `iu_id`. 
+
+So we have a choice - we could either aggregate the data based on their location (i.e., the coordinates) or based on which health district they are listed as falling under (the `iu_id_sour` column). This is fairly common with spatial data. It's important to remember that with data like this, there is no guarantee that both forms of data will be consistent - it is quite possible that some points might be located under one district, but be listed in the column as being located in another district. We could do some analysis to check this if we wanted to. 
+
+For this exercise we are going to aggregate the data by the spatial location - i.e., the coordinates showing where the point data are. 
+
+-   Make sure the Processing Toolbox is visible by clicking
+    **Processing** and seeing if **Toolbox** is selected. You should be
+    able to see the toolbox on your screen (usually on the right hand
+    side).
+
+![](images/processing-toolbox.png)
+
+::: callout-note
+*If the **Processing** option is not visible (between **Mesh** and
+**Help** on the menu bar at the top of the screen) you may need to
+enable it. Go to **Plugins \> Manage and Install Plugins**. Go to
+**Installed** and search for **Processing**. Make sure the check box is
+ticked ![](images/check-box.png){height="20"}. Click **Close** and
+**Processing** should appear in the menu bar between **Mesh** and
+**Help**.*
+:::
+
+-   In the Processing Toolbox, click on **Vector general** \> **Join attributes by location (summary)**.
+
+-   Under **Base layer** select `Health_districs`. This section
+    refers to the layer we want to use as a template for aggregating our
+    point data.
+
+-   Under **Join layer** select `Uganda Helminths point data`. This section
+    refers to the layer we want to aggregate and produce summary
+    statistics from.
+
+-   We want to aggregate points that are **contained** by, or that
+    **intersect** with polygon of a district. Under **Geometric
+    predicate** check the checkboxes for **intersect** and **contain**.
+
+-   Under **Fields to summarise** -- select `st_examin` and `sth_positi` only. These are the fields we are interested in, we want to aggregate all points within a boundary of a district and then take the summation.
+
+::: callout-note
+We are actually interested in the `sth_prevla` field - prevlance of Helminths. We could average the prevlance for the points in each health district but this wouldn't give us a very accurate estimate because we are giving equal weight to each point in the health district, which may not be the case in reality. Each point will probably have a different number of tests, and we need to reflect this in the calculations. Instead, we will aggregate the `st_examin` and the `sth_positi` data, and then calculate a new `sth_prevla` for each health district. 
+:::
+
+-   Under **Summaries to calculate** select **sum**.
+
+-   Click on **Run**.
+
+-   Click **Close** when the aggregation is complete.
+
+![](images/join-attributes-by-location.png)
+
+- This will produce a temporary layer called **Joined Layer** in the
+**Layers Panel**. We know this is a temporary layer because of the small
+memory chip icon ![](images/temp-layer.png){height="20"} to the right of
+the layer name.\
+- Save this as a permanent layer by right-clicking on **Joined Layer**
+and save it as `Uganda Helminths health districts prevlance.shp`.
+
+Checking the **attribute table** for `Uganda Helminths health districts prevlance` layer we can see the new fields called `sth_examin` and `sth_positi`. `sth_examin` refers to the number of examinations aggregated in a
+district, and `sth_positi` refers to the number if positive results within a district.
+
+We are interested in the prelvance, so we need to calculate this:
+
+`sth_positiv / sth_examin`
+
+- Open within the **Attribute Table** for `Uganda Helminths health districts prevlance` layer, choose **Field Calculator**.
+
+- Select **Create a new field**.
+
+- Set **Output field name** to `sth_prevla`.
+
+- Set **Output field type** to **Decimal number (real)**.
+
+- Expand **Fields and Values**. Select `sth_positi`, divide `/` and `sth_examin`. Your window should look like this:
+
+
+![](images/field-calculator-health.png){width=80%}
+- Click **OK**. 
+
+- Now we have a prevlance rate calculated for each health district. 
+
+- Turn off Editing ![](images/toggle-editing.png){height="20"} and choose **Save** when promoted if you want to save the changes. 
+
+Unfortunately, because we are saving our data into a shapefile, we are
+limited to how many characters a column name can have, and so QGIS has
+cut the end off the column names. 
+
+::: callout-note
+**Optional Exercise**
+
+It is very common for these type of data to be put in WHO categories to gauge levels of how infectious are intense at a point/area. The categories are:
+
+-    < 1.0% (Negligible)
+-    1.0% to 19.9% (Low risk)
+-    20.0% to 49.9% (Moderate risk)
+-    \> 50.0% (High risk)
+
+Try setting the classifications to these four groups and show this on the map. 
+:::
+
+The aggregation for Helminths prevlance by health district is complete. We will return to this layer in a bit. Now, we will perform the same procedure for the raster population 2020 census data.
+
+### Adding raster data to QGIS
+
+Up to this point, we've been adding only vector data to QGIS. Here, we
+will start to add raster data. This raster data will show the population
+density i.e., estimated number of people per grid square at a resolution
+of 100m (resolution means the size of each of the cells, so in this case
+this means that length and width of each grid is 100m).
+
+To add raster data to the display window:
+
+-   Click on the **Open Data Source Manager**
+    ![](images/open-data-source-manager.png){height="20"} icon in the
+    Layer Toolbar.
+-   Click on the **Raster** ![](images/raster.png){height="20"} option.
+-   Click on the browse button.
+-   Select the file `uga_ppp_2020_UNadj_constrained.tif` and
+    click on **Open**.
+-   Click **Add** and **Close**.
+
+*Important note: Raster data are often stored as a GeoTIFF (either as
+.tif, .tiff, .TIF or .TIFF) format*.
+
+When adding raster data to QGIS, it will, by default, always set the
+colour as black and white. This is because the render type (i.e., a
+setting in the Layer Properties for raster data) is set to as singleband
+gray. The singleband pseudocolour option allows for much more
+interesting visualisation of the gridded data, and allows you to change
+the colour ramps to represent continuous or discrete values. However, we
+will explore more of these settings in the next tutorial and just stick
+with the defaults for now.
+
+Now, we've loaded our population data, let's proceed to aggregate this
+to obtain district-level population counts.
+
+### Deriving population size of districts -- aggregation of raster data by polygons
+
+The procedure for aggregating raster values within polygons are as
+follows:
+
+-   In the **Processing Toolbox** panel - click on **Raster analysis \>
+    Zonal statistics**
+-   The **Zonal Statistics** menu for analysis of raster information
+    should appear.
+-   Under **Input layer** select `Uganda Helminths healh districts prevlance`. This is the
+    vector layer we want to use as a template for aggregation.
+-   Under **Raster layer** select
+    `uga_ppp_2020_UNadj_constrained.tif`.
+-   Under **Output column prefix** leave as the underscore `_` symbol.
+-   In **Statistics to calculate** click on the browse button and only
+    leave the **Sum** checked. Uncheck the remaining options that appear
+    checked (**Count** and **Mean**). QGIS will calculate the sum of the
+    values of the grids falling within a district to produce population
+    size of a district. It will name this field as `_sum`.
+-   Click **OK**.
+
+![](images/zonal-statistics.png)
+
+-   Click on **Run** (wait for the operation to complete, it might take
+    10 - 15 seconds) and **Close**.
+
+
+You will see a new layer has been created called `Zonal Statistics`.
+Open the **Attribute Table** and you will see it is the same as the
+`ZAF_district_assult` layer, but a new column has been generated for the
+2010 population sizes for the districts called `_sum`.
+
+`_sum` is not a particually helpful name, so lets rename `_sum` to `pop2020`:
+
+-   Go into the **Layer Properties** menu of `Zonal Statistics` and
+    select the **Fields** tab.
+-   Click on the toggle editing icon
+    ![](images/toggle-editing.png){height="20"} to start editing.
+-   Under the **Name** column, double-click `_sum` and rename this
+    to `pop2020`. 
+-   Click on the toggle editing icon to stop editing. Here, a **Stop Editing** window will pop-up to prompt you to update this shape file - click on **Save**.
+-   Click **OK**.
+
+Let's save this as a new shape file and called it
+`Helminths health districts.shp`. Do you remember how to do this?
+
+### Calculating Helminths risk rate
+
+Our layer named `Helminths health districts` is the clean spatial
+dataset with the appropriate field names for estimating the
+health district level Helminths rates in Uganda.
+
+Now that we know the Helminths rate, we can use the population data to work out how many people might be at risk of contracting Helminths. To do this we multiply the prevlance `sth_prevla` by the total population `pop2020`. 
+
+The **Field Calculator** is a really powerful tool in QGIS that allows
+us to construct and apply a formula to calculate a new value for every
+row in the dataset.
+
+-   Open the **Attribute Table** for the
+    `Helminths health districts` layer.
+
+-   Click on the **Field Calculator**
+    ![](images/field-calculator.png){height="20"}.
+
+-   Make sure **Create a new field** is selected.
+
+-   In **Output field name**, type the name of the field you wish to
+    generate: `at_risk`.
+
+-   Set **Output field type** to **Decimal number (real)**.
+
+-   We want the estimates to have only 2 decimal places, set **Output
+    field Precision** to `2`.
+
+-   Expand the **Fields and Values** by clicking the arrow
+    ![](images/arrow.png){height="20"}. Here, we select the fields in
+    the above formula.
+
+-   Double-click on the field `sta_prelva` -- this should appear in the
+    Expression's calculator. Here, you can construct your mathematical
+    formula by selecting fields and typing in the numbers. The formula
+    should look like:
+
+`"sta_prelva" * "pop2020"`
+
+-   Click **OK** to generate the desired estimates
+
+![](images/field-calculator-health-2.png)
+
+::: callout-note
+**Important note:** Every time you use the **Field Calculator** to add
+a new column through calculations you will activate Editing Mode. This
+is similar to applying edits to a vector layer. To turn editing mode
+off, you must always click on the Toggle Edits button
+![](images/toggle-editing.png){height="20"} to stop editing and save the
+edits. This, in turn, will apply any updates as well as save the new
+column in `Helminths health districts`.
+:::
+
+The final attribute table should appear as follows:
+
+![](images/attribute-table-health.png)
+
+We can now generate our health district level map of Helminths rates. It is
+the same procedure when we created the point maps for the stations
+earlier on in this exercise. Recall the steps were:
+
+-   Right-click on the `Helminths health districts` and select
+    **Properties** to access its **Layer Properties** menu.
+
+-   Choose the **Symbology** tab on the left-hand side of the menu and
+    select **Graduated** on the topmost selection bar.
+
+-   We want to display the prevlance for each health district. For
+    **Value** select `sth_prevla`.
+
+-   In **Colour ramp** select **Reds**.
+
+-   You can specify the method for which classes are generated (equal
+    interval, quantile, natural breaks, standard deviation or pretty
+    breaks). For this example -- select **Equal Interval** and type `6`
+    in Classes to generate six intervals.
+
+-   Click **Apply** and **OK**.
+
+It is standard practice to split the mapping of our prevalence data into these WHO categories to gauge levels of how infectious are intense at a point/area. The categories are:
+
+-    < 1.0% (Negligible)
+-    1.0% to 19.9% (Low risk)
+-    20.0% to 49.9% (Moderate risk)
+-    \> 50.0% (High risk)
+
+-   Go back into **Symbology** and change the number of **Classes** to **4**. 
+
+-   Double click on the first entry **0.00000 - 0.2092** and change **Upper Value** to **0.01**. Click **OK**. 
+
+-   Update the other entries to match the categories above. 
+
+- We can also update the labels - double click on the entry under **Legend** for each class, and adjust it to match the information above. 
+
+![](images/custom-legend.png)
+
+- Click **OK** when you are happy. 
+
+The final output in the Display window should appear as:
+
+![](images/map-health.png){width=80%}
+
+Do note that we have some missing data for some health regions - this is not unusual with this type of data. In the image above, they are shown as mustard yellow, because the underneath layers are showing through. Note how they don't have any point data in them - this is why no data are in the polygon layer. 
+
+### Interpretation of output
+
+In the **Layers** panel you can see the rates of Helminths in 2020 are represented as a legend under layer
+`Helminths health districts`. Districts with the lowest reported
+rates are those with estimates anything at/below 1%. Likewise, districts with the highest reported rates are those with anything at/above 50%.
+
+Bear in mind that the results are on QGIS **Display** window -- you will
+need to go into the **Print Layout** tool which allows the user to
+create high quality publication-styled maps for them to be included in
+peer-reviewed articles. The outputs can also be exported as an image
+(.png, .jpeg, etc.) or pdf document in **Print Layout** which can be
+shared with other stakeholders or researchers. You can refer to Lesson 4
+in the series to follow the steps in using **Print Layout**.
+
+You can save this project by clicking on the Save icon in the toolbar
+and name the project as `Uganda Helminths project.qgz`.
+
+### Appendix: Lesson 5
+
+**Data source(s):**
+
+`African_countries` Shape file -
+https://www.geoboundaries.org/downloadCGAZ.html
+
+`uga_ppp_2020_UNadj_constrained` Raster data file - https://hub.worldpop.org/geodata/summary?id=49721
+
+`Uganda Helminths point data.csv` - Created from a combination of  records directly released from national NTD programmes from participating countries primarily from Sub-Saharan Africa; and data abstracted from peer-reviewed publications and official reports – these abstracted data were used to create this open-resource known as the [Global Atlas for Helminth Infection - GAHI](https://www.thiswormyworld.org/). The full list of references is [here](https://www.thiswormyworld.org/sites/default/files/Uganda_STH_SCH_references.pdf)  The abstracted dataset (GAHI only) can be downloaded [here](https://lshtm.maps.arcgis.com/apps/webappviewer/index.html?id=2e1bc70731114537a8504e3260b6fbc0). The GAHI data with the national data released by participating countries were combined into the project Expanded Special Project for Elimination of Neglected Tropical Disease (ESPEN-NTD) [here](https://espen.afro.who.int/). The data set (i.e., the one I have shared with you) used for the exercise can be downloaded [here](https://espen.afro.who.int/diseases/schistosomiasis). The user will need to select “Data” tab, and select “Uganda” (under Country) and “Site Level” (under Level) to get the full point data. One can also go to the “Tools & Resources” section get the any data for the different disease types under “Download data” tab. 
+
+`Health_districts.shp` shape files - From EPSEN-NTD, at https://espen.afro.who.int/tools-resources/cartography-database
+
+**Citation(s):**
+
+Runfola, D. et al. (2020) geoBoundaries: A global database of political
+administrative boundaries. PLoS ONE 15(4): e0231866.
+https://doi.org/10.1371/journal.pone.0231866
+
+\newpage
+
+## Lesson 6: Various spatial interpolation techniques in QGIS
+
+| Learning Outcomes                                    | GIS Concepts                      |
+|------------------------------------------------------|----------------------------------|
+| Using IDWs to predict rates of Helminths             | IWD (p76)                        |
+| Visualising IDW outputs                              | Symbology (p78)                  |
+| Clipping raster data to vector layer                 |  Clip Raster by Mask Layer (p79) |
+| Using KDE to understand the density of arson attacks | KDE (p81)                        |
+| Visualising KDE outputs                              | Symbology (p83)                  |
+| Clipping raster data to vector layer                 | Clip Raster by Mask Layer (p85)  |
+
+
+### Introduction
+
+Spatial interpolation are techniques used to predict values of cells from a sample of existing data points. These data points can in turn, be utilised to determine unknown values for any geographic point.
+
+For instance, suppose I know the land surface temperature value of a single point in a location - from this point, I can use spatial interpolation to predict land surface temperature value of nearby and unknown points.
+
+There are wide range of spatial interpolation techniques – these include Inverse Distance Weighting (IDW), Kernel Density Estimation (KDE), and the more advanced methods such as Kriging and Model-Based Geostatistics (MBGs).
+
+In QGIS, we will learn how to perform two basic spatial interpolation methods:
+
+- Part 1: Inverse Distance Weighting (IDW)
+- Part 2: Kernel Density Estimation (KDE)
+
+In the context of epidemiology – the Inverse Distance Weighting (IDW) method is primarily focused on using point data, which measures either prevalence or incidence rates for a range of events (i.e., continuous). Kernel Density Estimation (KDE) specifically uses single event or a case as point data (i.e., discrete), and is therefore concerned with predicting the density of prevalence. 
+
+What all spatial techniques have in common is that they use point vector data to make surface predictions – these predicted values are in turn stored as raster data.
+
+We will explore how to use these techniques in QGIS, with the lesson being split into two parts.
+
+
+#### Prerequisites
+
+To attempt lesson 6, you need to have completed lessons 1, 2, 3 and 4.
+We will be starting a new project, but it is assumed that you know how
+to add, import and save spatial data, understand spatial layer
+management, as well as knowing how to use Print Layout tool.
+
+#### Downloading data
+
+As we did for the previous lessons, please make sure you have downloaded
+data for Lesson 6: `lesson-6-data.zip` from the website and extract it.
+You should have 37 files.
+
+### Part 1: Inverse Distance Weighting (IDW)
+
+Let’s begin part 1 of Lesson 6 with Inverse Distance Weighting (IDW).
+
+- Open **QGIS Desktop** and create a **New Project**. 
+
+- Save this project as `Lesson_6_part1_IDW.qgz`.
+
+Load the required vector files in QGIS. 
+
+The following shape files should be added into QGIS:
+
+- `Africa_countries.shp` (contains national boundaries of official African countries)
+- `National_boundary.shp` (contains the national boundary of Nigeria)
+- `Uganda Helminths point data` (contains point vector data measuring the prevalence of Helminths)
+
+Change the properties of `African_countries` and `National_boundaries` by rendering its fill colours as grey and white, respectively, and include the colour of the sea.
+
+![](images/idw-helminths-point-data.png){width=60%}
+
+The red points in the above image represent locations of health centres in Uganda. For each point we have determined the rates of Helminths, using the data from Lesson 5.
+This will give us point prevlance rate data. We can use IDW to interpolate these estimates over unmeasured surface where there are no data – i.e., white spaces between health centres. This technique uses an explicit assumption that points that are close to each one another are alike than points that are farther away. IDW method uses measured values surrounding an unmeasured point to make predictions. The result output is a continuous surface on a raster map.
+
+#### Using IDWs to predict the rates of Helminths
+
+We can use the IDW interpolation tool in QGIS to generate a raster template for which the rates of Helminths can be interpolated over. The resulting surface will be the predicted rates of Helminths.
+
+This can be achieved in the following steps:
+
+- Under the **Processing Toolbox** click on the section for **Interpolation > IDW interpolation** and the IDW Interpolation tool will appear.
+- We need to specify which point layer contains the estimates we wish to spatially interpolate. Under **Vector layer** select `Uganda Helminths point data`.
+- After specifying the point layer, we need to state which field attribute contains the estimates we wish to spatially interpolate. Under Interpolation attribute select `sth_prevla` (note: this field must be a real number, and not a string nor integer value!).
+- Click on **Green Plus Sign** ![](images/plus.png){height="20"} to add the information we specified in the Input section to the tool. 
+- We want to interpolate the full extent of Uganda. Under **Extent**, choose the drop down arrow ![](images/dropdown-arrow.png){height="20"} select **Calculate from layer** > **National_boundaries**.
+- In Interpolated section, click on the browse button, choose **Save to a file** and choose the location to export the results. Save it as `Helminths_gridded_idw.tif`.
+- Click on **Run** and then **Close**.
+
+![](images/idw-interpolation.png){width=90%}
+
+The results should appear as follows:
+
+![](images/idw-output-1.png){width=80%}
+
+#### Visualising IDW outputs
+
+You can see the image is in black and white at the moment. We can clear the appearance and render it to something that can be interpreted by going into the properties of this raster file:
+
+- Right-click on `Helminths_gridded_idw` and select **Properties** to access its Layer Properties menu.
+- Click **Symbology** located on the left-hand side of the Layer Properties menu to access the band rendering settings. Under **Render type**, select **Singleband pseudocolor**.
+- Set **Interpolation** to **Discrete**.
+- Under **Color ramp**, **All Color Ramps**, select **RdYlBu**. The colour palette goes from red to yellow to blue (i.e., low intensity of Helsmiths from red, and higher as blue); therefore, we need to invert the colour palette accordingly by selecting **Invert Colour Ramp** after choosing **RdYlBu**.
+- Choose the mode as **Quantile**, and **7** as the number of classes. Do not click on OK yet.
+- Click **Transparency** located on the left-hand side of the Layer Properties menu to access the Global transparency settings. You can set the levels of transparency to **80%** by moving the slide bar.
+- Now, click **OK** to finalise changes to appearance of results.
+
+![](images/idw-symbology.png){width=80%}
+
+We need to crop the resulting grid to Uganda’s national boundaries. This can be done by:
+
+- Click on **Raster > Extraction > Clip raster by Mask Layer**. 
+- In **Input layer** - select `Helminths_gridded_idw`. Here, you are choosing which raster you wish to crop.
+- In **Mask layer** – select `National_boundary`. Here, you are choosing which layer to serve as a template for cropping the raster to size.
+- Make sure to check the option Keep resolution of output raster.
+- In **Clipped (mask)** (near the bottom), choose Browse and save the results as `Helminths_prevlance_10by10km.tif`.
+- Click **Run** and **Close**.
+
+It will add the new clipped layer to the map canvas. However, the image will be in black and white. You have to repeat the above steps of rendering the image into something that can be interpreted appropriately.
+
+The interpolated victimisation should appear as follows:
+
+![](images/idw-output-2.png){width=80%}
+
+#### Interpretation of output
+
+We have produced a map showing the predicted incidence rates of Helminths in South Africa. An example of interpreting this map – areas with yellow colours indicate that the reported rates for Helminths are between 0.16 and 0.19 (at resolution of 10km), whereas areas with the lowest intensity of Helminths are predicted to be reported <= 0.11 (at resolution of 10km).
+
+Bear in mind that the results are on QGIS Display window – you will need to go into the **Print Layout** tool, which allows the user to create high quality publication-styled maps for them to be included in peer-viewed articles. The outputs can also be exported as an image (.png, .jpeg etc.) or pdf document in **Print Layout** which can be shared with other stakeholders or researchers. You can refer to earlier tutorials in the series to follow the steps in using **Print Layout**.
+
+Do not forget to **save** this project and **close** it.
+
+This concludes part 1 of lesson 5. 
+
+### Part 2: Kernel Density Estimation (KDE)
+
+Let’s begin part 2 of Lesson 6 with Kernel Density Estimation (KDE).
+
+- Open a **New Project** for this part of the practical session and
+save this project as `Lesson_6_part2_KDE.qgz`.
+
+Crime event data shows the actual location in which a crime has taken place and has been georeferenced – for example, the address of a home that’s been burgled, graffiti on the wall of someone’s property or the location of an arson crime. We might be particularly interested in wanting to visualise the occurrence of crime events as density measure. We can do this using a useful technical called the Kernel Density Estimation (KDE) which is typically a non-parametric function that can be used to estimate the density of events (crime) in a setting.
+
+The process for making raster maps with KDEs is easy. This tutorial will provide a step-by-step guide for conducting such analysis in QGIS Desktop.
+
+There was wave of vandalism in Kenya – arsonists targeted and burnt more than 100 schools in 2016. We have available a list of 121 schools that were burnt by arsonists in 2016. The schools that were victimised in such manner have been geo-located and are examples of point event data. Suppose that authorities are interested in knowing the density of schools burnt within certain areas (at resolution 10km) then KDEs will be a good approach for addressing this problem.
+Let’s begin by creating our atlas for Kenya and visualising the distribution of schools that were burnt in 2016.
+
+#### Using KDE to understand the density of arson attacks on schools
+
+The following shape files should be added into QGIS:
+
+- `KEN_Arson_schools_2016.shp` (point vector data containing location of schools that were torched by arsonists in 2016)
+- `geoBoundaries-KEN-ADM1.shp` (contains the county boundaries for Kenya)
+- `geoBoundaries-KEN-ADM0.shp` (contains the national boundary for Kenya)
+- `Africa.shp` (contains national boundaries of official African countries)
+
+The data should appear as follows:
+
+![](images/kde-data.png){width=60%}
+
+- In the **Processing Toolbox** (located on the right-hand side of the window) – click on **Interpolation** to expand the option. 
+- Select **Heatmap (Kernel Density Estimation)** and a window should pop-up allowing us to specify the parameters for conducting such interpolation technique. 
+
+Complete the following:
+
+- We need to specify which layer contains the point data we wish to spatially interpolate. Under **Point layer** select `KEN_Arson_schools_2016`.
+- We need to specify the search radius. For this exercise, we are using 50km as the value.
+
+::: callout-note
+**Important note**: the point data’s coordinates projection system is in WGS84 which uses decimal degrees. Now, 0.0008333 decimal degrees (approximately at the equator) in WGS84 is equivalent to 100m. Therefore, 1km is 0.008333, 10km is 0.08333, 100km is 0.8333 and etc. 
+For our KDE analysis, a radius of about 50km is fine. If we needed the radius to be precise (if we were completing a different analysis where this was crucial) then we would need to reproject our data to a projected coordinate system, e.g., either UTM 36N or UTM 35N for Kenya.
+:::
+
+- In **Radius (layer units)** section, enter the search radius value as `0.4165`
+(~50km).
+- We want to generate 1km-by-1km grids. We can do this by specifying the **Pixel size** for X and Y as `0.00833` (~ 1km).
+- In Heat map section under **Advanced parameters** click on the on the browse button and choose the location to save the results to a file. Name it as `KEN_schools_victimised_1by1km` and save it.
+- Click **Run** and then **Close**.
+
+![](images/kde-heatmap-tool.png){width=80%}
+
+#### Visualising KDE outputs
+
+We need to crop the resulting grid to Kenya’s national boundaries. You can do this in the following steps:
+
+- Click on **Raster > Extraction > Clip Raster by Mask Layer**. The Clip by Mask Layer menu will appear.
+- In the **Input layer** select `KEN_schools_victimised_1by1km`. Here, you choose which raster you wish to crop.
+- We need to specify that our template for cropping the raster is the `geoBoundaries-KEN-ADM0` file. Under **Mask layer**, select `geoBoundaries-KEN-ADM0`.
+- Click on the browse button and then select `Save to File...`. Name the file as
+`KEN_schools_victimisation_1by1km_clipped` and it will be saved as a .tif
+- Click **Run** and **Close**.
+
+![](images/kde-clip.png){width=60%}
+
+The output should look as follows:
+
+![](images/kde-output.png){width=60%}
+
+As you can see the resulting image is in black and white at the moment. We can clear the appearance and render it to something that can be interpreted by going into the properties of this raster file. Since, we are dealing with cases/events it makes sense to use legends that contain discrete values i.e., 1, 2, 3, 4 and so on.
+
+- Right-click on `KEN_schools_victimised_1by1km_clipped` and select **Properties** to access its Layer Properties menu.
+- Click **Symbology** located on the left-hand side of the Layer Properties menu to access the band rendering settings. 
+- Under **Render type**, select **Singleband pseudocolor**.
+- Under **Band** in the **min/max section** – notice that maximum value predicted by the KDEs was 15.1077, and the minimum value predicted is something just above 0.000. Let’s modify this by typing `0` as the minimum value in the **Min** section. Now, type `16` as the maximum value in the **Max** section. We are using the range from 0 to 16 to create our legends that hold discrete values.
+- Under **Interpolation**, select **Discrete**.
+- Under **Colour ramp**, select **Reds**. The colour palette goes from lightest of reds to the darkest of reds (i.e., lowest intensity of victimisation is represented by lightest of reds, and highest victimisation are the darkest of reds).
+- Under **Mode**, choose **Equal Interval** and select 8 as the number of classes. You will see a notation of `inf` in the last category. Do not be alarmed – it indicates any value from just above the previous class to infinity. In our case it is 15 - 16. Change the label of `inf` to `15 - 16`. 
+
+- The first category in the legend corresponds to any grid that has ≤2 schools that were burnt. The next category corresponds to 3-4 schools that were burnt, the next 5-6 and so on. Update the rest of the labels accordingly (see below to view the changes).
+
+![](images/kde-symbology.png){width=80%}
+
+- Click **Transparency** located on the left-hand side of the Layer Properties menu to access the Global transparency settings. You can set the levels of transparency to **80%** by moving the slider in the left direction.
+- Now, click **OK** to finalise changes to appearance of results.
+
+The resulting layer using KDEs should appear as follows:
+
+![](images/kde-output-2.png){width=80%}
+
+#### Interpretation of output
+
+We have produced a map showing the number of schools that were victims to arson attacks during 2016 in Kenya. The map reports the number of schools burnt per 1km2. An example of interpreting this map – areas with the darkest reds indicate that between 15 and 16 schools (per 1km2), were burnt in 2016. Whereas, areas with the lightest red colour indicates that at most 2 schools (per 1km2) were targeted and burnt down by arsonists.
+
+Bear in mind that the results are on QGIS Display window – you will need to go into the **Print Layout** tool, which allows the user to create high quality publication-styled maps for them to be included in peer-viewed articles. The outputs can also be exported as an image (.png, .jpeg etc.) or pdf document in **Print Layout** which can be shared with other stakeholders or researchers. You can refer to earlier tutorials in the series to follow the steps in using **Print Layout**.
+
+### Appendix: Lesson 6
+
+**Data source(s):**
+
+`African_countries` Shape file -
+https://www.geoboundaries.org/downloadCGAZ.html
+
+`geoBoundaries-KEN-ADM0` Shape file & `geoBoundaries-KEN-ADM1.shp` 
+- https://www.geoboundaries.org/index.html#getdata
+
+`KEN_Arson_schools_2016` Shape file - https://africaopendata.org/dataset/burning-school-in-kenya
+
+\newpage
+
+## Lesson 7: Cartography using Inkscape
+
+| Learning Outcomes                        | GIS Concepts                      |
+|------------------------------------------|-----------------------------------|
+| Exporting data from QGIS                 | Export as SVG (p77)               |
+| Layers in Inkscape                       | Show/Hide Layers (p78)            |
+| Adding Text                              | Create and edit text object (p83) |
+| Adding Callouts                          | Beizer lines (p89)                |
+
+### Prerequisites
+
+To attempt lesson 7, you need to have completed lessons 1, 2, 3 and 4.
+We will be learning a new program, Inkscape, but we will be exporting
+our existing map from Print composer in QGIS.
+
+### Introduction
+
+By the end of lesson 4, you have created a nice quality map that can be
+used in a publication, essay or journal article. However, the map can be further improved. The QGIS **Print
+Layout** tool is very flexible, but it does have some limitations. By using
+Inkscape, a separate graphics program, you can make further tweaks to
+your map.
+
+::: callout-note
+**Important:** "Don't let perfection become the enemy of good"
+
+If you are a perfectionist (as I know I can be sometimes) it is easy to
+slip into the habit of thinking your map is never good enough and there
+is always more you can do to it. With any map, there probably are
+improvements you can do, but don't let this take up all of your time.
+The map by the end of lesson 4 might be good enough for what you want to
+do with it - it depends what you are doing with the map. Keep this is
+mind as we go through the next tutorial!
+:::
+
+This lesson has a series of steps to go through, like all of the others.
+However, the real benefit of using a program like Inkscape is that you
+can choose your own options. This is where you can show off your
+creative talents - so let the lesson be a guide showing you what can be
+done and how to use the tools - but feel free to go off on a tangent and
+make a different map.
+
+Graphic tools are commonly used to give some final polishing to maps
+before they are published. The typical workflow would be:
+
+![](images/mermaid-flowchart.png)
+
+A cartographer would typically create the map in a GIS and do as much
+symbology and customisation in the GIS as they could, before exporting
+it to a image editing program. There they could make some more changes
+and final tweaks before publishing the map. There is a lot of overlap
+between GIS and image editing - you can do many of the tasks in either
+type of software. Typically it's easier to do it in the GIS because a) 
+it is linked to the data so if you make changes to the data it will
+update automatically and b) if you have to go back to the GIS and change
+the colour / symbology / data / boundaries etc. you will have to
+re-apply all of the work you did in the graphics package.
+
+This can also apply if you are not using open source tools - the most
+common being ArcGIS Pro and Adobe Illustrator. The principle can apply
+with whatever tools you are using, and you can even use them in
+combination. We will be using Inkscape, an open source vector graphics
+program. Another open source graphics program is GIMP, which has been
+around longer, but is a little bit harder to use.
+
+### Installing Inkscape
+
+-   Go to https://inkscape.org/
+
+-   Click **Download Now!**
+
+![](images/inkscape-download.png)
+
+-   Download the installer file and follow the instructions.
+
+*These instructions were written using Inkscape 1.2.2. If you are using
+a different version, things might look slightly different.*
+
+-   At the end of the process, you will see the **Quick Setup** screen.
+    Accept all the default options and choose **Save**.
+
+![](images/inkscape-quicksetup.png){width="60%"}
+
+-   Then click **Thanks**. You will now see the **Time to Draw** screen,
+    which will appear everytime you open Inkscape. Your recent
+    files will appear here. For now, click **New Document**.
+
+-   Like many GIS programs, Inkscape can be a bit flaky. Make sure you
+    save your file frequently! If you are thinking about saving, you
+    probably should!
+
+::: callout-note
+Graphics programs and GIS programs have a lot in common and a number of
+key concepts are similar across both of them. Graphics come in bitmaps
+(like raster data, a series of pixels) and vector (exactly like vector
+data) which are a series of objects you can create and manipulate. They
+also have the concept of layers, with different objects in different
+layers. You can move things between layers, and show or hide layers.
+Fill is exactly like it is in QGIS - what colour do you want this
+object to be? Stroke refers to the line, like line style in QGIS.
+:::
+
+Inkscape has a lot of different tools and the initial screen has lots of
+buttons. We will only be using a few, here are some of the most common
+ones:
+
+![](images/inkscape-window.png)
+
+### Export data from QGIS
+
+Now we have Inkscape up and running, we need to export our data from
+QGIS.
+
+-   Open QGIS, and open your saved `Lesson_4.qgs` file.
+
+-   Open the print layout by going **Project** \> **Layouts** \>
+    **Prevalence of poverty in Nigeria (2014)**.
+
+-   We need to export the data as a SVG file. Choose the SVG option:
+
+![](images/map-export-svg.png)
+
+::: callout-note
+Tip: *SVG stands for Scalar Vector Graphic, and is a standard vector
+image format. Vector here means the same as vector in GIS data - it
+represents the image as a series of discrete objects, which Inkscape can
+then manipulate as individual objects. PNG (Portable Network Graphics)
+is a raster based image format. PDF is an alternative vector based
+format.*
+:::
+
+-   QGIS will give us a message saying that the export might not be
+    quite as we want. This is fine, and not a problem for us. Click
+    **Close** to continue.
+
+-   Choose to save the file somewhere you can find it, and give it a
+    name - `Prevalence of poverty in Nigeria (2014).svg` is fine. Click
+    **OK**.
+
+-   We now get another set of options! We can choose how QGIS exports
+    the image. For the moment, accept the defaults:
+
+![](images/svg-export-options.png){width="50%"}
+
+::: callout-note
+Note: We do have the option of recreating our layers in QGIS in the SVG
+file. If you select Export map layers as SVG groups, this is what will
+happen. This can be useful in some cases, and is not useful in other
+cases. For this exercise, leave this unticked.
+:::
+
+-   Click **Save**.
+
+### Managing Layers in Inkscape
+
+-   In Inkscape, click **File** and **Open...**.
+
+-   Navigate to where you saved your SVG file and open it. *It might
+    take a few seconds - be patient*.
+
+-   You should see your map, although it will look a little different:
+
+![](images/map-in-inkscape.png)
+
+-   When Inkscape imported the SVG file, it brought everything in
+    together. Inkscape can group items together - and in fact our map is
+    now in one big group.
+
+-   Right-click on the map and choose **Ungroup**.
+
+![](images/ungroup.png){width="40%"}
+
+-   It may take a few seconds, but Inkscape will ungroup the map and you
+    should see lots of boxes with dotted lines. Try clicking on
+    different things.
+
+-   Now is also a good time to save your file. Click **File** \> **Save
+    as...** and save your work as a new file. Choose a sensible name - I
+    used `Prevalence of poverty in Nigeria (2014) NB v1.svg`. *My
+    initials NB and v1 as version 1.*
+
+We can create new layers and group different things together.
+
+-   See what layers are already present. Choose **Layer** \> **Layers
+    and Objects...**. A new panel will appear on the right hand side of
+    the screen. *(see screenshot on next page)*
+
+-   If nothing is listed, click on the **Switch to layers view only**
+    ![](images/switch-to-layers-view-only.png){height="20"} button to
+    show everything.
+
+-   You should see a list of different objects - these are all things on
+    the map, grouped together. Click on something in the map (e.g. the
+    title) and the relevant object (or group) should be highlighted.
+
+-   We can create different layers to organise things. There is a lot of
+    content here, so it's easier if we create a layer called
+    **Everything Else**, put everything in there and then move bits out
+    as we are working on them.
+
+-   Click **Add layer...** ![](images/add-layer.png){height="20"} to add
+    a new layer and call it **Everything else**. Click **Add**. Inkscape
+    will add this to the top of the list.
+
+-   Select everything - using the Ctrl-A keyboard shortcut. It might
+    take a few seconds.
+
+-   Now, right-click and choose **Move to layer**. Choose your
+    **Everything else** layer and click **Move**. This will also take a
+    few seconds.
+
+-   Now you can see everything is grouped in the **Everything else**
+    layer.
+
+-   You can show and hide layers (and objects) by clicking the little
+    eye icon ![](images/show-hide.png){height="20"} which appears next
+    to each layer. *Move your mouse over the Everything else entry in
+    the Layers and Objects window to see it appear*. Click on it again
+    to show everything.
+
+![](images/inkscape-layers.png)
+
+-   Add a new layer called **Title**. Right-click on the title and
+    choose **Move to Layer** and move it to the Title layer. Repeat the
+    process with the blue background box. Hide the title by clicking on
+    the eye icon ![](images/show-hide.png){height="20"} next to the
+    group name.
+
+-   Repeat this process for the grey **Other Countries** layer and the
+    **Sea**.
+
+**Title**. Click **Add**. Inkscape will add this to the top of the list.
+
+-   Now, select the title, right-click and choose **Move to layer**.
+    Choose your **Title** layer and click **Move**. It will move the
+    object to the top when you do this - which might mean it hides the
+    data. Don't worry - just click **Hide** to hide the layer and we
+    will come back to this.
+
+-   There are lots of bits to the legend - try clicking on it, and you
+    will see the colours, or the text highlighted depending on where you
+    click. Draw a lasso around this - click and drag a box around what
+    you want to select.
+
+![](images/legend.png)
+
+-   Then add to a new group. Repeat the process for the inset map and
+    scale bar.
+
+-   At first glance, the north arrow looks like one object. However it
+    actually has several bits. Highlight them all and move them to a new
+    layer.
+
+-   Now is also a good time to save your file!
+
+You should now have an Inkscape window that looks a bit like this: *Note
+the different layers (Title, Sea, Legend, etc.) and the fact they are
+all hidden, apart from the Everything else layer*.
+
+![](images/inkscape-window-layers.png)
+
+### Editing your map in Inkscape
+
+We can make quite a lot of changes in Inkscape. First of all, we are
+going to update the title.
+
+-   Turn on the **Title** group so we can see it.
+
+-   Move both the text and the blue background box off the top of the
+    page, so we have space for our new title.
+
+-   To add a new Text object, click **Create and edit text objects** on
+    the left hand side
+    ![](images/create-and-edit-text-objects.png){height="20"}
+
+-   Click in the top of the empty space on the right-hand side, and type
+    in `Residents in Poverty`.
+
+-   Click **Text** \> **Text and Font** which will open the Font panel.
+
+-   Select the text (using the mouse or Ctrl-A) and set the size to
+    **28** and the Style to **Bold**. Check the font, and set it to
+    **Garamond**. Sometimes it will change immediately, sometimes you
+    need to click **Apply** at the bottom of the panel.
+
+![](images/font-panel.png){width="50%"}
+
+-   In the **Text** tab, add a line break (enter) between `Residents`
+    and `in Poverty` so the text is split over two lines. Press
+    **Apply**.
+
+-   Repeat the process to create a new text object with `(<$1.26 a day)`
+    in Bold and size 22 and `Nigeria (2014)` in Bold and size 20.
+
+-   Use the arrow tool (top-left)
+    ![](images/select-and-transform-objects.png){height="20"} to move
+    the text blocks around so they don't overlap each other, but don't
+    worry about getting them in exactly the right place.
+
+-   Select all three of them, and choose **Object \> Align and
+    Distribute**. A new panel will appear.
+
+-   Choose **Centre on Vertical Axis** which will line all the objects
+    up.
+
+-   Remember to **Save** (Ctrl-S) regularly!
+
+![](images/align-and-distribute.png)
+
+-   Go back to the **Layers and Objects** panel
+    ![](images/layers-and-objects.png){height="20"} and make sure your
+    new text objects are in the title group.
+
+-   Delete the bits of old title you don't need any more.
+
+-   Remember **undo** and **redo** are really useful tools. Use them a
+    lot!
+
+::: callout-note
+**Tip**
+The order that you do things is key. For example, there is no point
+adjusting the layout until you have decided how many decimal places you
+want the legend to show, what font style and size you want to use.
+However this can get a bit circular as you may not know what font size
+you want until you have the layout. This does mean it can get a bit
+repetitive unfortunately! I've tried to organise this in the most
+logical order, but there is a bit of back and forth.
+:::
+
+
+-   We did have a grey background layer for the other countries, but it
+    does distract a bit from the map, and it looks quite good with the
+    grey hidden, so let's leave it off.
+
+-   The black borders around the country do look a bit strong, and if
+    you remember from QGIS we did have a separate border around the
+    whole of Nigeria. If we don't have the other countries, we don't
+    really need the border either.
+
+-   So let's hide the country border. Create a new layer for the country
+    boundary
+
+![](images/country-border.png)
+
+-   It's a bit tricky to find, but try to click on the boarder itself.
+    Zooming in might help. You will probably get a big square selection
+    around the whole map. This is fine. Find the highlighted layer in
+    the layers panel. You can check which layer this is by turning it
+    off and on using the eye icon. Do this to verify you have the
+    correct layer selected. Move it to the new **Country Boundary**
+    layer. Turn it off.
+
+![](images/highlighted-layer.png)
+
+-   Show the legend (by clicking on the eye icon by the legend layer)
+    and move it down so it doesn't overlap the title.
+
+-   Double click on the legend text that says
+    `Prevlance of poverty (%)`. Go to the **Text and Font** panel.
+    Change the font to **Garamond** and the size to **12**.
+    
+![](images/text-and-font.png)
+
+-   Repeat this for each of the legend entries.
+
+-   Select the colour blocks and numbers, and move them so they are
+    centered beneath the legend title.
+
+-   Show the **Scale Bar**.
+
+-   Select the main part of the map, including the box around it and the
+    scale bar. Right-click on it and choose **Group**. This will group
+    all of the objects together into one. It will create a new group -
+    give it a suitable name. To rename, click on the group name and
+    press the spacebar. I called mine `Map & Scale Bar`.
+
+-   Select this, and then use the arrows to increase the size of the
+    inset map. Hold down Ctrl on the keyboard to maintain the aspect
+    ratio of the inset map - otherwise we will risk distorting the map!
+
+-   Re-arrange the title and legend to fit. There might be a blank white
+    box which covers up some of the box around the map. Feel free to
+    move or delete this.
+
+-   Turn on the **Inset map** layer. Use the arrows to increase the size
+    of the inset map. Hold down Ctrl on the keyboard to maintain the
+    aspect ratio of the inset map - otherwise we will risk distorting
+    Africa!
+
+-   Turn on the North Arrow. Shrink it by about half, and move it to
+    above the scale bar.
+
+-   Remember to save!
+
+### Adding Callouts
+
+-   Another thing we can add is call out labels. These are labels
+    identifying particularly interesting parts of the map. *What is
+    interesting of course depends on who your audience is and what you
+    are trying to communicate with your map!*
+
+-   For this map, let's pick out the highest (highest prevalence of
+    poverty) and lowest (lowest prevalence of poverty) LGAs on the map.
+
+-   First of all, look up the highest one in QGIS. Open the **Attribute
+    Table** for the `LGA_Poverty_Prevalence_2014` layer and click on the
+    column header **\_Poverty_R** to sort. Click to sort ascending
+    (lowest at the top) and click again to sort descending (highest at
+    the top). The highest should be `Ikwo` with a value of `0.914384`.
+
+-   Click on the number **1** to the left of the top row. This will
+    highlight it in the table and on the map. Choose the **Zoom to Row**
+    ![](images/zoom-to-row.png){height="20"}. This will show you in the
+    QGIS window where this LGA is.
+    
+![](images/lowest-lga.png)
+
+-   Zoom out in QGIS, and use this to identify where this LGA is in
+    Inkscape.
+
+-   We need to select the polygon in Inkscape, but we grouped the data,
+    so remember to ungroup the data first. I had three levels of
+    grouping to undo. It can be a tricky process. If you're not sure you
+    can always try deleting what you have selected - just remember to
+    Undo (Ctrl-Z) to put it back before continuing!
+
+-   Once you have identified it, make sure you can hide it with the eye
+    icon ![](images/show-hide.png){height="20"}.
+
+-   We are going to change the fill colour. With it visible and
+    selected, click on the colour you want to change it to on the bottom
+    row. I chose the Blue. Click the up and down arrows on the right
+    hand end to scroll through different colours.
+    
+![](images/choose-colour.png)    
+
+-   Add a new Text object with the text:
+
+**Ikwo LGA has the highest relative poverty, with a rate of 91.4%**
+
+-   You will probably need to change the fill back to black. Position
+    the text in the white space to the right of Ikwo.
+
+-   We're going to add a call-out line to link the text to the polygon.
+    We could use a stright line, but curves are a bit more interesting!
+
+-   Select the **Beizer** tool ![](images/beizer-tool.png){height="20"}
+
+-   It's a bit fiddly to use, so try it out in the space above your map.
+
+1.  Click - draw the first node.
+2.  Move - draw the line
+3.  Click and hold - add second node.
+4.  Move to adjust curve
+5.  Let go. Right click to finish.
+
+![](images/beizer-curve.png)
+
+-   A slightly odd cresent shape will appear - this is fine. Change the
+    Fill (click) to transparent (the red cross) and the Stroke (Shift +
+    click) to blue.
+
+-   Try this a couple of times to get the hang of it.
+
+-   Once you are happy, move one of the lines down to Ikwo. Use the **Edit
+    paths by nodes** ![](images/edit-path-by-node.png){height="20"} tool
+    to adjust the ends and the curve.
+
+-   If the curve appears behind the map, use the **Raise selection to
+    top** ![](images/raise-selection-to-top.png){height="20"} on the top
+    tool bar to bring it to the top.
+
+-   My grouping went a bit weird, so I had to move it a new group called
+    **Callouts** and move this above everything else. You may need to
+    experiment a bit.
+
+-   Repeat this process for the lowest area as well.
+
+-   Delete any old lines you don't need.
+
+### Adding Text and Images
+
+As a part of the conditions of using the data, we need to acknowledge
+where the data came from.
+
+-   Create a layer called **Acknowledgements**
+
+-   Add a new Text object, and add this text to it:
+
+**Created by Nick Bearman on 17/02/2023 Data from Geoboudaries.org, GADM
+and FAO**
+
+-   Replace my name and the date with your name and today's date.
+
+-   Position it in the bottom right hand corner.
+
+-   Reduce the font size - 8 worked well for me.
+
+We can also add images. Find an image of the flag of Nigeria and save it
+somewhere you can find it. *If you can't find one, the Wikipedia page
+has a good one.*
+
+-   In Inkscape, create a new layer called **Flag**.
+
+-   Choose **File \> Import...**
+
+-   Navigate to where you saved the file, and select it.
+
+-   Click **OK** in the **png bitmap image import** window.
+
+-   Resize the flag. Hold down **Ctrl** to keep the aspect ratio.
+
+-   Currently the flag has no outline around this. This makes it look a
+    little odd, so we are going to add a border.
+
+-   Use the **Create rectangles and squares** tool
+    ![](images/create-rectangles.png){height="20"} just larger than the
+    flag. Make sure it is positioned underneath the flag in the layers
+    window.
+
+-   Set the rectangle so it has a **transparent** fill and a **black**
+    stroke.
+
+-   Adjust the size so there is a black line around the flag.
+
+If you want to add or adjust anything else, then please do. There is no
+**right** or **wrong** way to create a map - be creative!
+
+If you want to find out a bit more, I would recommend this tutorial:
+[Open Source
+Cartography](https://github.com/MicheleTobias/OpenSourceCartography)
+written by Michele Tobias.
+
+As you can see, a number of the tasks we have just done can be done in
+QGIS or Inkscape - in fact, nearly everything can be done in Inkscape,
+but many tasks are easier to do in QGIS.
+
+The graphic capabilities of QGIS are continually developing - for
+example, one common example that we haven't mentioned is blending, which
+is using transparency on a layer to blend it in with the background, but
+varying the transparency based on the foreground colour. See [this
+example from Helen Makes
+Maps](https://www.helenmakesmaps.com/post/how-to-use-blending-modes-in-mapping)
+for a good overview. For a number of years this could only be done in
+Inkscape, but from around 2018, QGIS now has some options for blending.
+
+```{=html}
+<!--
+
+## Acknowledgements
+
+Thanks to Anwar Musah for help with the Helminths data and input on Lesson 5. 
+
+## Index
+
+points
+
+lines
+
+polygons
+
+zip file
+
+shape file
+
+qgz project file
+
+extract
+
+-->
+```
+
+----
+
+*This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. You are free to share – copy and redistribute the material in any medium or format. You are free to adapt – remix, transform and build upon the material. You may not use the material for commercial purposes. If you have any questions, or concerns – please send an email to Nick Bearman (nick@nickbearman.com)*

@@ -1,0 +1,1827 @@
+---
+title: "Practical guide to mapping and visualisation of crime and social data in R"
+author: "Dr Nick Bearman"
+toc: true
+number-sections: true
+format: 
+  pdf: default
+  html: default
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, echo=FALSE}
+knitr::opts_knit$set(root.dir = 'C:/Users/nick/Documents/GIS/sdi-data')
+```
+
+\newpage
+
+# Lesson 1: Preparation: Installing and Setting up R & RStudio
+
+## Introduction
+
+R began as an open source statistics program and is still used as a statistics program by many users. A number of libraries have been written for R which allow it to work with spatial data. We are going to use a program called RStudio, which works on top of R and provides a good user interface. 
+
+R and RStudio are compatible with many operating systems such as
+Windows, Mac (OSX), and Linux. R supports many different spatial data
+formats, and works with both vector and raster spatial data. It has a
+wide range of libraries which can be remotely installed to provide
+additional functions for handling spatial data and perform complex
+spatial analyses. More information about R (in general) can be accessed at <https://cran.r-project.org/> and a detailed overview of the spatial capabilities can be found at <https://cran.r-project.org/web/views/Spatial.html>.
+
+## Installing R & RStudio
+
+
+
+The latest version of R is version 4.3.0 which can be downloaded
+from the web link on <https://cran.r-project.org/>.
+
+### Download for Windows
+
+- Open a web browser and go to [https://cran.r-project.org/](https://cran.r-project.org/). 
+
+- Click **Download R for Windows**. 
+
+- Choose the link **install R for the first time**. 
+
+- Download the latest version (4.3.0 at time of writing) **Download R-4.3.0 for Windows**. 
+
+- Run through the program installation process.  
+
+- Once R is installed, we can install RStudio. 
+
+- Go to [https://www.rstudio.com/products/rstudio/download/#download](https://www.rstudio.com/products/rstudio/download/#download). 
+
+- Click **DOWNLOAD RSTUDIO DESKTOP FOR WINDOWS**
+
+- Download the latest version (2023.03.0+386 at the time of writing). 
+
+- Run through the program installation process.  
+
+
+### Download for macOS / OS X
+
+- Open a web browser and go to [https://cran.r-project.org/](https://cran.r-project.org/). 
+
+- Click **Download R for macOS**. 
+
+- Download the latest version (4.3.0 at time of writing) **R-4.3.0.pkg**. 
+
+- Run through the program installation process.  
+
+- Once R is installed, we can install RStudio. 
+
+- Go to [https://www.rstudio.com/products/rstudio/download/#download](https://www.rstudio.com/products/rstudio/download/#download). 
+
+- Click **DOWNLOAD RSTUDIO DESKTOP FOR MacOS**
+
+- Download the latest version (2023.03.0+386 at the time of writing). 
+
+- Run through the program installation process. 
+
+
+::: callout-note
+## **macOS / macBook Users**
+
+All the screenshots were taking using R & RStudio on Windows, so things might look a little different on macOS / OS X. However all the same features are there and you will be able to follow the materials without any problems.
+:::
+
+## Installing Libraries
+
+R uses libraries to add features and different tools, such as GIS and spatial analysis. We need to install some libraries we will be using. 
+
+- Open **RStudio**. 
+
+- In the **Console** type in `install.packages("sf")` and press enter. 
+
+This is (approximately) the output you should get:
+
+![](images/r-install-packages-sf-success-cut.png){width="80%"}
+
+- Check the output you get - red text does not always mean an error!
+
+- Repeat the process for the `tmap` package. 
+
+- In the **Console** type in `install.packages("tmap")`.
+
+This is the output you should get (*I've not included the full version because it is so long!*):
+
+![](images/r-install-packages-tmap-success-cut.png){width="80%"}
+
+## Problems with Libraries
+
+If you don't get this output, there may have been a problem. The best move is to try loading the libraries.
+
+- In the **Console** type in `library(sf)`.
+
+- and then type in `library(tmap)`.
+
+You should get something like this:
+
+![](images/r-load-library-success-sf-tmap.png)
+
+If you don't, then there are a few steps you can try:
+
+- R might say a dependent library is unavailable. 
+	
+	- Check what the red text says. If it says (for example) `There has been an error installing the Rcpp library`, try installing that library:
+	
+	- `install.packages("Rcpp")`
+	
+	- Then try loading it: `library(Rcpp)`
+	
+	- If that works, try installing either `sf` or `tmap` again.
+
+- R might ask if you want to compile the package from source:
+
+![](images/r-binary-version.png)
+
+- Usually the best choice here is to say no, which means R will use a very slightly older version of the library, but it should be fine for our work. 
+- *If you say yes, R will ask you to install RTools, which will probably work, but adds to the length of the setup time!*
+	
+- R might give you instructions to install another piece of software - try this if you can.
+ 
+- If none of those work, you can try uninstalling and reinstalling the library
+
+- Remove using `remove.packages("classInt")` (*e.g. for the `classInt` package*) or
+
+- Open the **Packages** tab (on the right) and click the `X` by whichever package you want to remove:
+	
+![](images/r-remove-packages.png)
+	
+- If that doesn't work, check out <https://nickbearman.github.io/installing-software/r-rstudio-library-troubleshooting.html> to see if there are any more things you can try. 
+
+- You can also try a Google search for the error message you are getting. 
+
+- An alternative is to use [RStudio.cloud](r-rstudio.html#rstudio-cloud) which will run R & RStudio in a web browser for you. 
+
+## Setting up RStudio
+
+- Open up RStudio (click **Start** and type in `RStudio` or double-click the icon on the desktop). 
+
+![](images/rstudio-labelled.png)
+
+This is the main interface for RStudio. 
+
+- On the left is the **Console**, where you can type in commands. 
+
+- On the top right is the **Environment** which lists which variables you have. 
+
+- On the bottom right is the **Files** tab which shows your working directory. There is also a tab marked **plots** which will show any maps you create. 
+
+## R Basics
+
+This covers some basic introduction material to R. If you have already used R, feel free to skip this section.
+
+R can initially be used as a calculator - enter the following into the left-hand side of the window - the section labelled **Console**:
+ 
+```{r,eval=FALSE}
+6 + 8
+```
+
+Don't worry about the `[1]` for the moment - just note that R printed out `14` since this is the answer to the sum you typed in.  In these worksheets, sometimes I show the results of what you have typed in.  This is in the format shown below:
+
+```{r, comment=NA}
+5 * 4
+```
+Also note that `*` is the symbol for multiplication here - the last command asked R to perform the calculation '5 times 4'.  Other symbols are `-` for subtraction and `/` for division:
+```{r, comment=NA}
+12 - 14
+6 / 17
+```
+
+
+You can also assign the answers of the calculations to variables and use them in calculations. 
+```{r, comment=NA}
+price <- 300
+```
+
+Here,  the value `300` is stored in the variable `price`.  The `<-` symbol means put the value on the right into the variable on the left, it is typed with a `<` followed by a `-`. The variables are shown in the window labelled **Environment**, in the top right. 
+
+::: callout-note
+Variables are a key concept in R - it is how R stores data. This can be any type of data - from a number, as we did earlier, to spatial data, as we will do later on. 
+:::
+
+Variables can be used in subsequent calculations.  For example, to apply a 20% discount to this price, you could enter the following:
+
+```{r, comment=NA}
+price - price * 0.2 
+```
+
+or you could use intermediate variables:
+```{r,tidy=FALSE, comment=NA}
+discount <- price * 0.2
+price - discount
+```
+
+R can also work with lists of numbers,  as well as individual ones. Lists are specified using the `c` function.  Suppose you have a list of house prices  specified in thousands of pounds.  You could store them in a variable called `house.prices` like this:
+
+```{r, comment=NA}
+house.prices <- c(120,150,212,99,199,299,159)
+house.prices
+```
+Note that there is no problem with full stops in the middle of variable names.
+
+You can then apply functions to the lists.
+```{r, comment=NA}
+mean(house.prices)
+```
+
+If the house prices are in thousands of pounds, then this tells us that the mean house price is 176,900 GBP.  Note that on your display, the answer may be displayed to more significant digits, so you may have something like `r mean(house.prices)` as the mean value.
+
+R has a way of storing data in an object called a **data frame**. This is rather like an internal spreadsheet where all the relevant data items are stored together as a set of columns. 
+
+We can read CSV files in as data frames - which we will do later on. We also use a similar method to read spatial data in, which we will also do later on. 
+
+\newpage
+
+# Lesson 2: Adding Spatial Vector Data in R
+
+| Learning Outcomes                                   | GIS Concepts                              |
+|-----------------------------------------------------|-------------------------------------------|
+| Understand vector and raster data                   | Vector data (p10), Raster data (Lesson 5) |
+| Extract data from a zip file                        | \*.zip file (p11)                         |
+| Creating a new R script                             | R script (p11)                            |
+| Creating a map using  vector data from a shape file | `qtm()` (p13)                             |
+
+## Introduction
+
+We will learn how to add different types of vector spatial data into
+R There are two distinct formats in which geographical information
+can be stored -- these are known as **Vector** and **Raster**.
+
+-   **Vector data:** Represents data with a geographical location as a
+    series of discrete objects. These are stored as either points, lines
+    or polygons. A vector is useful for storing data that has discrete
+    boundaries, for example, country boundaries, streets and individual
+    point locations of places (i.e. a building, town or city).
+
+-   **Raster data:** Considers geographical data as a grid of equal
+    sized cells. Each of these cells contains a number that represents
+    the data. Raster data is very useful for storing data that varies
+    continuously on a surface. Examples include surface elevation,
+    temperature, rainfall, air pollution, population density or
+    satellite images.
+
+For now, we will be focusing of vector data (later in Lesson 5 we will
+learn more about raster data). We will learn how to add vector spatial
+data into R and construct a basic atlas of Africa showing its major
+cities and how their roads are connected.
+
+```{r}
+
+```
+
+## Downloading data
+
+For each lesson, you will need to download the data we are using and
+extract it. We provide the data as a zip file, which is a series of many
+files compressed together. To work with the data you need to download it
+and extract it.
+
+-   Download the data for Lesson 2: `lesson-2-data.zip` from the website
+    and save it somewhere you can find it.
+
+-   Extract the file by right-clicking `lesson-2-data.zip` and choosing
+    **Extract All...**.
+
+![](images/extract-data-1.png){width="60%"}
+
+-   Click **Extract**. The files will be extracted and a new window will
+    appear. There should be 18 files, and they should look like this:
+
+![](images/extract-data-2.png){width="60%"}
+
+## Reading spatial data into R
+
+We could continue to type our commands into the console for R, but a better way to do it is to write our code in a script, and then run that. This a) makes it much easier to go back and edit our code when we make a mistake and b) allows us to run multiple lines of code at the same time. 
+
+- Create a new script by clicking **File > New File > R Script**.
+
+![](images/rstudio-new-script.png){width="60%"}
+
+- This opens a new panel in the top-left, which is your script. 
+
+- Comments are a really important part of any code. These are notes (to yourself or colleagues) about what each part of the script does. 
+
+- Comments start with a `#`. Type into the script `# My GIS script`. This is your first comment!
+
+::: callout-note
+If you are only sharing your work with yourself, it's easy to think "oh yes I will remember that, I don't need to write a comment". I **guarantee** that if you do that, 6 months down the line when you open your script, you will not immediately remember what that line does. 
+
+Another way to think about it - even if you are only working on your own, you are still collaborating with someone - your future self. Your future self will appreciate any notes the code has - so make sure you include those notes!
+:::
+
+## Setting your working directory
+
+- R can read in files from your computer, but by default it will only look in your working directory. 
+
+- We will set this to the folder you extracted the files from `lesson-2-data.zip` in the earlier steps. 
+
+- In RStudio, click **Session > Set Working Directory > Choose Directory...**
+
+![](images/rstudio-set-working-directory.png){width="60%"}
+
+- Browse to the folder where you have the 18 files unzipped from `lesson-2-data.zip`. Click **Open**. 
+
+- RStudio will set the working directory. Note how the code in the **Console** shows the code to do what you just did `setwd("C:/Users/nick/Documents/GIS/lesson-2-data")` and the **Files** panel shows the files in the working directory. 
+
+- *Note also how the working directory is listed in the Console header.* 
+
+![](images/rstudio-set-working-directory-window.png){width="80%"}
+
+We can now start to read in some GIS data. 
+
+- Remember we need to load the spatial libraries. Type the code `library(sf)` into the script. 
+
+- Click anywhere on that line and click **Run**.
+
+![](images/library-sf-run.png)){width="80%"}
+
+- Type in `library(tmap)` on the next line.
+
+- You cloud click **Run** again, or you can use the keyboard shortcut - hold down Control (sometimes labelled Ctrl) and press Enter. Try the keyboard shortcut. 
+
+Now you should have both libraries loaded. Check the text - if there is an error so back to the setup instructions (Lesson 1) and check for things you can try. 
+
+```{r include=FALSE}
+library(sf)
+library(tmap)
+```
+
+
+
+## Displaying vector data in R
+
+Let's start to view some spatial data. We are going to construct a basic atlas of Africa which shows the location of major cities and road networks. We have the following vector data (or shape files (.shp)) for the whole of Africa, the 186 major cities and over 400,000 km of roads:
+
+-   `Africa_countries.shp`
+-   `Major_cities.shp`
+-   `Major_roads.shp`
+
+Let's load the `Africa_countries` shape file. Type in this code in the script, and run it:
+
+```{r}
+# read in african countries shapefile
+africa <- st_read("African_countries.shp")
+```
+
+- The `st_read` function reads in the shapefile and stores it as a Simple Features (or `sf`) object.
+
+- We can also draw a quick map of this layer:
+
+```{r}
+# draw map
+qtm(africa)
+```
+
+- This gives us a preview of the data. 
+
+- We can also read in the other data using the same approach:
+
+```{r}
+# read in cities shapefile
+cities <- st_read("Major_cities.shp")
+```
+```{r}
+# read in roads shapefile
+roads <- st_read("Major_roads.shp")
+```
+- We can plot maps for each of these using `qtm()` like we did earlier. However to plot all of these on to one map we need a different approach. 
+
+```{r}
+#plot all layers together
+tm_shape(africa) +
+  tm_polygons() +
+tm_shape(roads) +
+  tm_lines() +
+tm_shape(cities) +
+  tm_dots()
+```
+
+The function `tm_shape()` allows us to add the layers together. Note also the `+` in the code. After every `tm_shape()` we need to have `tm_polygons()`, `tm_lines()` or `tm_dots()`, depending on whether we are showing polygons, lines or points. 
+
+Vector data has three sub-types: points, lines and polygons. They are used to show different types of objects:
+
+- **Points:** a single location, defined by one pair of coordinates. *Usually used to represent a Point of Interest, bus stop, building, location, etc.* 
+
+- **Lines:** a series of points linked together in a specified order. *Usually used to represent linear objects, such as roads, rivers, railways, etc.*. 
+
+- **Polygons:** a series of points linked together in a specified order which encloses an area. *Usually used to represent areas, such as administrative boundaries, counties, countries, building footprints, etc.*
+
+This does show all three layers. The `cities` layer (the dots) aren't very visible because there are a lot of roads. However, they are there. In the next section, we will look at customising the symbology so we can see the different layers. 
+
+## Changing the visual and colour properties of vector data
+
+At the moment the image in the Plots window does not qualify as a
+decent atlas. We are going to modify the colours and symbology for
+Africa, the roads and the cities. There are many many many different ways to specify colour in R. We will show you a few examples as we go through. Firstly, R has some predefined colours we can use. Let's give Africa a land colour of bone yellow. 
+
+```{r echo=TRUE, eval = FALSE}
+#plot all layers together
+tm_shape(africa) +
+  tm_polygons("wheat1")
+```
+
+We can also make the roads a lighter grey:
+
+```{r echo=TRUE, eval = FALSE}
+#plot all layers together
+tm_shape(roads) +
+  tm_lines("grey80")
+```
+
+Brining it all together:
+
+```{r}
+#plot all layers together
+tm_shape(africa) +
+  tm_polygons("wheat1") +
+tm_shape(roads) +
+  tm_lines("grey80") +
+tm_shape(cities) +
+  tm_dots() 
+```
+
+**Note:** the order is important. R draws these things in order, so the bottom layer `cities` is on the top of the map. Try swapping the order or `cities` and `roads` and see what happens. 
+
+::: callout-note
+R has 657 built in colours we can call by name. Running `colors()` *(note the US spelling)* will give us a long list. More usefully this PDF <https://www.nceas.ucsb.edu/sites/default/files/2020-04/colorPaletteCheatsheet.pdf> gives a nice overview of the colours on p3, and some useful background information. 
+:::
+
+We could also change the line thickness using the `scale` parameter and the dot size using the `size` parameter. Note that the value of `1` is the default size and it works as a multiplier. 
+
+```{r echo=TRUE, eval = FALSE}
+tm_shape(africa) +
+  tm_polygons("wheat1") +
+tm_shape(roads) +
+  tm_lines("grey80", scale = 5) +
+tm_shape(cities) +
+  tm_dots(size = 1.5) 
+```
+
+Now that we are done constructing our Atlas, we have the option of saving the map. 
+
+- The easiest way is to click **Export > Save as Image** in the Plots window. Choose where you want to save your map, and there you go. 
+
+- It's also important to save your script - click the **Save** icon and the name of the script will go from red to black when it is saved. 
+
+![](images/r-save-script.png)
+
+- Close RStudio - when you do this, it may ask you if you want to save your Environment - these are the variables you have created so far. In our case, this is `africa`, `cities` and `roads`. We can click **No**, as we have already saved our script, and we can use our script to re-create these next time. 
+
+
+## Summary
+
+We constructed a basic Atlas showing the locations of big cities and
+roads in Africa, and familiarised ourselves with adding shape files in
+R, and knowing what constitutes a point, line and polygon data.
+
+In the next tutorials, we will focus on the data science of managing
+spatial layers -- the optimal way of arranging vector layers and modifying their properties for optimal visualisation. We also learn how to import spreadsheet data containing attribute information and perform attribute joins. Ultimately, these techniques will be used visualise the distribution of poverty in Nigeria.
+
+## Appendix: Lesson 2
+
+**Data source(s):**
+
+African_countries Shape file -
+https://www.geoboundaries.org/downloadCGAZ.html
+
+Major_cities Shape file -
+https://www.naturalearthdata.com/downloads/50m-cultural-vectors/
+
+Major_roads Shape file -
+https://www.naturalearthdata.com/downloads/10m-cultural-vectors/roads/
+
+\newpage
+
+# Lesson 3: Layer Management and joining in R
+
+| Learning Outcomes                    | GIS Concepts          |
+|--------------------------------------|-----------------------|
+| Showing multiple layers              | `tm_shape()` (p27)    |
+| Symbolysing data                     | Colours (p28)         |
+| Joining spatial and non-spatial data | Attribute Joins (p31) |
+| Creating a choropleth map            | `qtm()` (p34)         |
+
+## Introduction
+
+In the previous tutorial, we learnt how to add vector data to R; however,
+we did not discuss data layer management. When working with multiple layers of spatial data, there are a number of things to remember when showing this data. The order of the data layers are very important. If a **polygon**
+layer is drawn above a **point** or **line** layer, the **polygons** can completely mask the
+**points** and **lines**. Similarly, for **polygons** as well, the
+extents of a district can be masked out completely by a higher
+administrative boundary (e.g. state or country-level). See figure below
+which shows the `National_boundary` (beige) and
+`Local_Government_Authorities` (brown) layers completely covered by the
+`State_boundaries` layer (red). The `African_countries` layer (grey) is
+only visible because it is larger than the other layers:
+
+```{r eval = FALSE, echo=FALSE, message=FALSE, quiet = TRUE}
+# load libraries
+library(sf)
+library(tmap)
+
+# read in shapefiles
+africa <- st_read("African_countries.shp")
+lga <- st_read("Local_Government_Authorities.shp")
+national_boundary <- st_read("National_boundary.shp")
+states <- st_read("state_boundaries.shp")
+
+tm_shape(national_boundary) +
+  tm_polygons("beige") +
+  tm_shape(africa) +
+  tm_polygons("grey47") +
+  tm_shape(lga) +
+  tm_polygons() +
+  tm_shape(national_boundary) +
+  tm_polygons("beige") +
+  tm_shape(states) +
+  tm_polygons("firebrick")
+
+```
+![](images/r-layer-map.png)
+
+In this tutorial, we will strictly be dealing with vector **polygon** data. Here, we will focus on effective ways of layer management and further ways for modifying the properties of the layers. Further layer management includes **attribute joins** to merge spatial and non-spatial data. Ultimately, these techniques will lead us to construct an Atlas for Nigeria showing the prevalence of poverty across all districts.
+
+If you have not already, please make sure to download and extract the corresponding dataset for Lesson 3 from the website. If you are not sure how to do this, please follow the instructions from Lesson 2.
+
+## Layer management
+
+- Open **RStudio**
+
+- Create a new script by clicking **File > New File > R Script**.
+
+![](images/rstudio-new-script.png){width="60%"}
+
+- In RStudio, click **Session > Set Working Directory > Choose Directory...**
+
+![](images/rstudio-set-working-directory.png){width="60%"}
+
+- Browse to the folder where you have the files unzipped from `lesson-3-data.zip`. Click **Open**. 
+
+- Use the code below to read in `African_countries.shp` and plot it to check it has read in correctly:
+
+```{r}
+# load libraries
+library(sf)
+library(tmap)
+
+# read in african countries shapefile
+africa <- st_read("African_countries.shp")
+
+# draw map
+qtm(africa)
+```
+
+Repeat the process for the other shape files. 
+
+-   `National_boundary.shp` (shape file for Nigeria's national boundary)
+
+-   `State_boundaries.shp` (shape file for Nigeria's state borders)
+
+-   `Local_Government_Authorities.shp` (shape file for Nigeria's
+    districts)
+
+```{r}
+lga <- st_read("Local_Government_Authorities.shp")
+qtm(lga)
+
+national_boundary <- st_read("National_boundary.shp")
+qtm(national_boundary)
+
+states <- st_read("state_boundaries.shp")
+qtm(states)
+
+```
+
+We have plotted each one separately - however, we can also plot them all together:
+
+```{r}
+tm_shape(africa) +
+  tm_polygons("wheat1") +
+  tm_shape(lga) +
+  tm_polygons() +
+  tm_shape(national_boundary) +
+  tm_polygons() 
+```
+
+One important thing to remember about `tmap` is that the order of layers in important. This is for two reasons - firstly, they first layer sets the area that the map covers. In the example above, this shows the whole of Africa, as `africa` is the first layer. If we move `national_boundary` first, then the map area is set by `national_boundary`. 
+
+```{r}
+tm_shape(national_boundary) +
+  tm_polygons() +
+tm_shape(africa) +
+  tm_polygons("wheat1") +
+tm_shape(lga) +
+  tm_polygons() 
+
+```
+
+Now national boundary is the bottom layer, so if we actually want to see it, we need to repeat it in the code. 
+
+To show the data in the most effective way, the *ideal* arrangement of these layers are:
+
+-   Local_Government_Authorties.shp
+
+-   State_boundaries.shp
+
+-   National_boundary.shp
+
+-   African_countries.shp
+
+In theory, this is the ideal arrangement for most layers. However, it is
+not the best arrangement in this case because it stops us knowing which
+**State** each **Local Government Authority (LGA)** belongs to.
+
+In order to show the States without entirely covering the LGAs - we will show the layer but then make it transparent, by only showing the borders of the layer. 
+
+```{r}
+tm_shape(national_boundary) +
+  tm_borders() +
+tm_shape(africa) +
+  tm_polygons("grey87") +
+tm_shape(national_boundary) +
+  tm_borders(col = "black", lwd = 4) +
+tm_shape(lga) + 
+  tm_polygons("tomato2", border.col = "black", border.alpha = 0.5) +
+tm_shape(states) +
+  tm_borders(col = "black", lwd = 2) 
+```
+
+Here, we have shown the layers in the best order, staring with `national_boundary` to set the plot area, then `africa` in grey and including `national_boundary` again to actually show the border - in black, with a thicker line (`lwd = 4`). 
+
+We then show the `lga` layer, currently in a red colour, with the borders of the `lga` set to black (`border.col`) and the line set to 50% transparent (`border.alpha = 0.5`). Then we add the `states` on top with a slightly thicker black line. 
+
+Experiment with difference values and colours to see how it impacts the map. Remember page 3 of <https://www.nceas.ucsb.edu/sites/default/files/2020-04/colorPaletteCheatsheet.pdf> has an overview of all of the colours built in to R. 
+
+See if you can create the map below, changing Africa to a darker grey and the local government authorities to dark grey:
+
+```{r echo=FALSE}
+tm_shape(national_boundary) +
+  tm_borders() +
+  tm_shape(africa) +
+  tm_polygons("grey47") +
+  tm_shape(national_boundary) +
+  tm_borders(col = "black", lwd = 4) +
+  tm_shape(lga) + 
+  tm_polygons("grey87", border.col = "black", border.alpha = 0.5) +
+  tm_shape(states) +
+  tm_borders(col = "black", lwd = 2) 
+```
+
+
+Nice! We have established a good template to which we can construct our
+showing levels of poverty. Now is great time to save our progress for
+this project by clicking on the **Save** icon. 
+
+
+## Importing non-spatial data and performing attribute joins
+
+We have provided a non-spatial data as an Excel spreadsheet, saved in
+CSV format (Comma Separated Values) which contains LGA-level prevalence
+of poverty in 2014 (the fraction of population living in poverty as
+defined by \$1.40 a day in 2010 prices). *The data are from the FAO,
+part of the UN. See Appendix for details.*
+
+We can import this using the `read.csv()` function:
+
+```{r}
+#read in csv file
+poverty <- read.csv("nigeria_2014_poverty-admin-2.csv")
+```
+
+As usual, we need to check the data has been read in correctly:
+
+```{r}
+head(poverty)
+```
+You can see that the data contains
+five fields:
+
+-   **GID_2**: Unique identification code for LGAs
+
+-   **State**: The name of the state that the LGA falls in in Nigeria
+
+-   **LGA**: The name of the LGA in Nigeria
+
+-   **Poverty**: Estimated levels (or prevalence) of poverty in a LGA
+
+-   **Population_2014**: Overall number of people in a LGA at 2014
+
+-   **Poverty_Rate**: The proportion of the total population who live in
+    poverty
+
+-   **Poverty_Count_2014**: Estimated number of people living in poverty
+    in 2014 (below \$1.40 a day)
+    
+Remember if you want to look at the table in a interactive window, you can use `View(poverty)` to open a **View** tab. 
+
+We want to map the field **Poverty**; however, we cannot do much with
+this attribute table unless we merge it with some other spatial data.
+
+Now, let's look at the **attribute table** for the LGA layer.
+
+```{r}
+head(lga)
+```
+
+You can see this also contains five fields:
+
+-   **ISO3**: A three-digit unique identification for a country
+
+-   **Country**: The name country of the LGAs
+
+-   **States**: The names of the Nigerian state the LGA is in
+
+-   **LGA_ID**: Unique identification code for LGAs
+
+-   **Districts**: The name of the LGA in Nigeria
+
+-   **Alt-Name**: An alternative name for the LGA
+
+We can merge the attribute table (i.e., `nigeria_2014_poverty-admin-2`)
+with our spatial data (i.e. `Local_Government_Authorities`) using the
+common field, `GID_2` and `LGA_ID`. This is called an *Attribute Join* (in GIS terminology. In R terminology, this is sometimes called a merge).
+
+```{r}
+#perform attribute join
+lga <- merge(lga, poverty, by.x = "LGA_ID", by.y = "GID_2")
+```
+
+Again, let's make sure it worked, by looking at the **attribute table** of `Local_Government_Authorities` to view it contents:
+
+```{r}
+head(lga)
+```
+
+As you can see, the join has linked the two datasets. In R, it's not necessary to explicitly save this join - the data will stay joined until we close R. If we then return to our project, we would run the code again to get back to this same point (i.e. we would recreate the join). 
+
+We have our joined data now, and we are ready to construct our poverty map.
+
+## Map construction
+
+We can generate a map showing the distribution of poverty in Nigeria. We can use the simple `qtm()` function as we did before:
+
+```{r}
+#qtm map
+qtm(lga, fill = "Poverty_Rate")
+```
+
+This is fine, but not a very exciting map. We will talk a lot more about the customisation options of the `tmap` library in Lesson 4: Visualisation using tmap in R, but for now we are going to focus on the colours and classification of the poverty data. 
+
+In this choropleth map, the defaults have used orange colours and split the data into 5 groups. You may remember we talked about the colours built into R before. These are fine for most graphs, but don't work very well for maps, particularly choropleth maps. 
+
+Color Brewer (https://colorbrewer2.org/) is a great website which discusses colour choices for choropleth maps, and if you want more details check out the website, or look at have a look at [Brewer et al. (2013)](https://www.tandfonline.com/doi/abs/10.1559/152304003100010929).
+
+There are lots of pros and cons to different colour selections.
+Traditionally one shade, going from light to dark is a good choice for
+choropleth maps like this one. Usually, darker colours represent higher
+values and lighter colours represent lower values. 
+
+We can look at the potential colour options from ColorBrewer:
+
+```{r, eval=FALSE}
+#load the R Color Brewer library
+library(RColorBrewer)
+#display the palette
+display.brewer.all()
+```
+
+![](images/rcolorbrewer-palette.png)
+
+Let's start off with **Greens**:
+
+```{r}
+tm_shape(lga) +
+  tm_polygons("Poverty_Rate", palette = "Greens")
+```
+
+You can specify the method for which classes are generated (i.e. equal interval, equal count, natural breaks, standard deviation or pretty breaks). For this example, change the colour to **OrRd** (orange-red) use **Jenks** and have **7** groups:
+
+```{r}
+tm_shape(lga) +
+tm_polygons("Poverty_Rate", title = "Poverty Rate", palette = "OrRd", n = 7, 
+            style = "jenks")
+```
+
+You can see the LGA level prevalence of poverty in 2014 are represented
+as a legend under layer `LGA_Poverty_Prevalence_2014` with the lowest
+intensity represented by very pale red and highest as dark reds.
+
+There are many many options you can choose to make this map. Try experimenting:
+
+- with different colours (`display.brewer.all()`)
+- with different numbers of groups (`n = 7`)
+- with different classification methods (`style = "jenks")`. Options include `equal`, `pretty`, `quantile`, `sd`, `fisher`, `jenks` and `fixed`.
+
+Once you are happy with your map, we can export it to a image file. 
+
+- Choose **Export** > **Save as image...**
+- Change the folder and name if you like, and click **Save**. 
+
+![](images/rstudio-export-image.png){width="60%"}
+
+## Summary
+
+We constructed a basic Atlas showing the LGA prevalence of poverty in
+Nigeria. We learnt some steps on how to manage layers to get the best
+arrangement for optimal visualisation. We have done further layer
+manipulation of layer properties and symbology. Finally, we conducted
+attribute joining of both spatial and non-spatial data sets.
+
+So far, we have only constructed our maps in the Plot window. The
+next step is to learn how to create high quality publication style maps -- this is useful especially if one needs to create maps for articles or share results with other stakeholders or researchers.
+
+## Appendix: Lesson 3
+
+**Data source(s):**
+
+African_countries Shape file -
+https://www.geoboundaries.org/downloadCGAZ.html
+
+Datafile Format Source African_countries Shape file
+https://gadm.org/download_country_v3.html States_boundaries Shape file
+https://gadm.org/download_country_v3.html Local_Government_Authorities
+Shape file https://gadm.org/download_country_v3.html
+
+Poverty Data
+https://data.apps.fao.org/catalog/dataset/poverty-map-nigeria-2014
+
+**Citation(s):**
+
+Brewer, Cynthia A., Hatchard, Geoffrey W. & Harrower Mark A.  (2003) ColorBrewer in Print: A Catalog of Color Schemes for Maps, Cartography and Geographic Information Science, 30:1, 5-32, https://doi.org/10.1559/152304003100010929
+
+Runfola, D. et al. (2020) geoBoundaries: A global database of political
+administrative boundaries. PLoS ONE 15(4): e0231866.
+https://doi.org/10.1371/journal.pone.0231866
+
+\newpage
+
+# Lesson 4: Visualisation using tmap in R
+
+| Learning Outcomes                         | GIS Concepts            |
+|-------------------------------------------|-------------------------|
+| Create a publication ready map            | `tm_shape()` (p43)      |
+| Adding a scale bar                        | `tm_scale_bar()` (p44)  |
+| Adding a north arrow                      | `tm_compass()` (p45)    |
+| Explaining symbology                      | `tm_legend()` (p47)     |
+
+## Introduction
+
+Up until this point, we have focused on working with different layers,
+layer arrangement and the creation of the atlas in the Plots window of
+R This is fine to look at data, but  if you are presenting your map, R 
+has some other options for creating maps within the `tmap` library. This allows
+you to add legends, scale bars, titles  and many other things
+that you need to create a professional map. You can then export this as
+an image or print it out - ready for inserting into a report, article or
+sharing as a stand alone map.
+
+Here is an example of a completed map in print layout:
+
+![](images/helminths-map.png){width="80%"}
+
+This is an example of an epidemiological map showing details of the
+endemicity status of soil transmitted health infections (an intestinal
+parasitic worm) in local areas of Nigeria. Can you spot all the
+important features and finishing touches for this map?
+
+*Map from: Expanded Special Project for Elimination of Neglected
+Tropical Diseases (ESPEN) (http://espen.afro.who.int/countries/nigeria)*
+
+Take a look carefully at the image below. We have highlighted all the
+essential features that should be included in a completed map.
+
+![](images/helminths-map-labelled.png){width="80%"}
+
+1.  Map title
+2.  Legend
+3.  Map inset
+4.  North Arrow and Map scale
+5.  Map canvas
+
+R is not as flexible tool as QGIS for creating these types of maps. Most of what we need to do we can do in R, but some additional work we may need to do in another piece of software. See the note at the end of the lesson about InkScape for further suggestions. 
+
+Remember we constructed an atlas in lesson 3 which showed the LGA
+prevalence of poverty in Nigeria. This lesson continues from where we
+left off in lesson 3. Bring in your script from lesson 3 and run it as a starting point. If you don't have your script, or it doesn't work, you can use the example `script3.R`. You map should look like this:
+
+```{r}
+tm_shape(lga) +
+  tm_polygons("Poverty_Rate", title = "Poverty Rate", palette = "OrRd", n = 7,
+              style = "jenks")
+```
+
+
+## Creating our map
+
+We can integrate our map code (above) with our existing selection of layers showing the national boundary, the state boundaries, and surrounding countries in Africa:
+
+```{r}
+tm_shape(national_boundary) +
+  tm_borders() +
+  tm_shape(africa) +
+  tm_polygons("grey47") +
+  tm_shape(national_boundary) +
+  tm_borders(col = "black", lwd = 4) +
+  tm_shape(lga) + 
+  #code showing poverty data
+  tm_polygons("Poverty_Rate", title = "Poverty Rate", palette = "OrRd", n = 7,
+              style = "jenks", border.col = "black", border.alpha = 0.5) +
+  tm_shape(states) +
+  tm_borders(col = "black", lwd = 2) 
+
+```
+
+## Adding a scale bar
+
+It is good practice to always add a scale bar to a map - this provides
+the reader a visualise indication of the size the feature, as well as
+the distance between features on map. This is particularly important if
+the person likely to be reading the map is not familiar with the area. A
+scale bar allows them to know how large different features are. There
+are various different styles of scale bar, and we are using one which is
+a line, with the distance shown with vertical lines.
+
+```{r}
+tm_shape(national_boundary) +
+  tm_borders() +
+  tm_shape(africa) +
+  tm_polygons("grey47") +
+  tm_shape(national_boundary) +
+  tm_borders(col = "black", lwd = 4) +
+  tm_shape(lga) + 
+  tm_polygons("Poverty_Rate", title = "Poverty Rate", palette = "OrRd", n = 7,
+              style = "jenks", border.col = "black", border.alpha = 0.5) +
+  tm_shape(states) +
+  tm_borders(col = "black", lwd = 2) +
+  #Add scale bar
+  tm_scale_bar(width = 0.12, position = c("left", 0.01))
+```
+
+A number of the `tmap` library functions use numbers for width and position. Here `width` is how long the scale bar is. In our example `0.12` equates to 200km. `0.12` comes from the proportion of the width of the whole screen - so a value of `1` would make the scale bar fill the whole screen. 
+
+- Try adjusting the scale bar width to `0.2` and see what happens. 
+
+The other element is the position - this has two values. The first one is left-to-right and the second one is top-to-bottom. You can use numbers or keywords for these. The keywords are `top`, `middle`, `bottom`, and `left`, `center` and `right` (note the US spelling). Numbers range from `0` to `1`, with `0` being left/bottom and `1` being right/top. 
+
+- Try moving the scale bar to the `top` `left` corner. 
+
+## Adding a north arrow (or compass)
+
+Similarly, it is always good practice to add a north arrow (or a
+compass) to a map -- this feature enables the reader to have a bearings
+of direction in which features are facing on a map.
+
+```{r}
+tm_shape(national_boundary) +
+  tm_borders() +
+  tm_shape(africa) +
+  tm_polygons("grey47") +
+  tm_shape(national_boundary) +
+  tm_borders(col = "black", lwd = 4) +
+  tm_shape(lga) + 
+  tm_polygons("Poverty_Rate", title = "Poverty Rate", palette = "OrRd", n = 7,
+              style = "jenks", border.col = "black", border.alpha = 0.5) +
+  tm_shape(states) +
+  tm_borders(col = "black", lwd = 2) +
+  #Add scale bar
+  tm_scale_bar(width = 0.12, position = c("left", 0.01)) +
+  #add north arrow
+  tm_compass(position = c(0.001, "top"))
+```
+
+Exactly the same principle applies to the north arrow position as it did to the scale bar. 
+
+
+## Adding Legends
+
+It is always a good idea to include a key or legend in your map to
+explain whichever geographical phenomenon your map is showing.
+
+Here, we already have a legend showing the distribution of poverty at LGA-level across Nigeria. However it is just the default, and currently covers a bit of the map which is not very useful. 
+
+We can reduce the size of the legend a bit, and replace **to** in the legend with a dash **-**:
+
+```{r}
+#update legend
+tm_shape(national_boundary) +
+  tm_borders() +
+  tm_shape(africa) +
+  tm_polygons("grey47") +
+  tm_shape(national_boundary) +
+  tm_borders(col = "black", lwd = 4) +
+  tm_shape(lga) + 
+  tm_polygons("Poverty_Rate", title = "Poverty (rate)", palette = "OrRd", n = 7,
+              style = "jenks", border.col = "black", border.alpha = 0.5, 
+              legend.format = list(text.separator= "-")) +
+  tm_legend(scale = 0.8, position = c(0.8, "bottom")) +
+  tm_shape(states) +
+  tm_borders(col = "black", lwd = 2) +
+  #Add scale bar
+  tm_scale_bar(width = 0.12, position = c("left", 0.01)) +
+  #add north arrow
+  tm_compass(position = c(0.001, "top"))
+```
+
+Adding the parameter `legend.format = list(text.separator= "-")` has actually made the legend a bit smaller, solving our title overlap issue as well. However, I also had to add the `scale = 0.8` parameter to make it a bit smaller to fit within the map. 
+
+The `tm_layout` and `tm_legend` functions are very flexible - but they can get a bit complex. This next section is optional - feel free to skip if you wish!
+
+The poverty data is listed as a rate (between 0 and 1 for each LGA). However it is better represented as a percentage. We can update the legend to show this:
+
+```{r}
+##add legend advanced
+tm_shape(national_boundary) +
+  tm_borders() +
+  tm_shape(africa) +
+  tm_polygons("grey47") +
+  tm_shape(national_boundary) +
+  tm_borders(col = "black", lwd = 4) +
+  tm_shape(lga) + 
+  tm_polygons("Poverty_Rate", title = "Poverty (%)", palette = "OrRd", n = 7,
+              style = "jenks", border.col = "black", border.alpha = 0.5, 
+              legend.format = list(text.separator= "-", fun=function(x) paste0(
+                formatC(x * 100, digits=0, format="f")))) +
+  tm_legend(position = c(0.8, "bottom")) +
+  tm_shape(states) +
+  tm_borders(col = "black", lwd = 2) +
+  #Add scale bar
+  tm_scale_bar(width = 0.12, position = c("left", 0.01)) +
+  #add north arrow
+  tm_compass(position = c(0.001, "top"))
+```
+
+We have updated the `legend.format` parameter, but there is quite a lot going on there. To look at things in a bit more detail:
+
+```{r eval=FALSE}
+legend.format = list(text.separator= "-", fun=function(x) paste0(formatC(
+  x * 100, digits=0, format="f"))))
+```
+
+It can sometimes be useful to space code out in R:
+
+```{r eval=FALSE}
+legend.format = list(text.separator= "-", 
+                     fun=function(x) paste0(formatC
+                        (x * 100, digits=0, format="f")
+                       )
+                     )
+```
+
+Working in reverse:
+
+- `format="f"` sets the format for the numbers, `f` being standard format (i.e. not scientific, which is `g`). 
+
+- `digits = 0` sets how many decimal places there are - 0 in this case. 
+
+- `x` is the value being displayed, and `* 100` is because we need to convert this from a rate to a percentage
+
+- All of the above is wrapped within `formatC()` to format the numbers as we want them. 
+
+- This is then wrapped within `paste0()` to render this as a piece of r code run for each legend entry
+
+- `fun=function(x)` sets this up as a function. `x` is the legend label in this case, and the `function()` applies the code to each legend label in turn. 
+
+- The `text.separator= "-"` does exactly the same thing as it does in the previous example. 
+
+The complexity is because we need to multiply the data by 100. If the data were already percentages in the data frame, we could simplify this to:
+
+```{r eval=FALSE}
+legend.format = list(text.separator= "-", digits=0, format="f")
+```
+
+There are many more options too. As a starting point, have a look at:
+
+- https://www.rdocumentation.org/packages/tmap/versions/3.3-3/topics/tm_fill Search for `legend.format` and look at the options there
+- https://www.jla-data.net/2017/09/20/2017-09-19-tmap-legend is where the example of multiplying by 100 came from. 
+- Also https://www.rdocumentation.org/packages/tmap/versions/3.3-3/topics/tm_layout has some useful info on legend position and size (search for `legend.`).
+
+
+## Exporting to a file
+
+Currently our map is being show in the **Plots** window, which is fine, but if you are working on a small screen, there won't be much room in the plots window. Equally, the size is different for each computer, so a set of code won't produce exactly the same map on a different computer.
+
+The better way of creating maps is to save the map as a variable, and then save this as a file. This will then recreate consistently on different computers. 
+
+```{r}
+m <- tm_shape(national_boundary) +
+  tm_borders() +
+  tm_shape(africa) +
+  tm_polygons("grey47") +
+  tm_shape(national_boundary) +
+  tm_borders(col = "black", lwd = 4) +
+  tm_shape(lga) + 
+  tm_polygons("Poverty_Rate", title = "Poverty (%)", palette = "OrRd", n = 7,
+              style = "jenks", border.col = "black", border.alpha = 0.5, 
+              legend.format = list(text.separator= "-", fun=function(x) paste0(
+                formatC(x * 100, digits=0, format="f")))) +
+  tm_legend(scale = 1.4, position = c(0.80, "bottom")) +
+  tm_shape(states) +
+  tm_borders(col = "black", lwd = 2) +
+  #Add scale bar
+  tm_scale_bar(lwd = 2, width = 0.15, text.size = 1.6, position = c("left", 0.01)) +
+  #add north arrow
+  tm_compass(position = c(0.001, "top"), size = 3)
+
+tmap_save(m)
+```
+
+When you run this code, no map will appear in the **Plots** window - this is normal. Instead, the map has been saved. You will get a message something like this which says where the map has been saved:
+
+```
+Map saved to C:\Users\nick\Documents\GIS\sdi-data\tmap01.png
+Resolution: 2331.266 by 1891.676 pixels
+Size: 7.770888 by 6.305586 inches (300 dpi)
+```
+
+You will then need to open the file to look at the map. You might also need to adjust the size or layout to get it as you want it. This is a bit fiddly,as every time you make a change you need to re-run the code, and reopen the map. However once it is setup you won't need to change it again!
+
+One amazing thing you can do with this is use loops to create multiple maps. This can be different data over the same area, or the same data over different areas. (You can also have different data over different areas using a loop within a loop, what is called a nested loop). This is beyond this course, but if you are interested, check out https://github.com/nickbearman/intro-r-spatial-analysis , the section titled **Exporting and Creating Multiple Maps**. 
+
+## Working with R and Inkscape
+
+Lesson 7: Cartography using Inkscape has some useful instructions on how to do more with your map once it is output from QGIS. R can also output SVG files, which you can then edit in Inkscape, using the same techniques. This code will export the map as a SVG file:
+
+```{r, eval=FALSE}
+tmap_save(m, "map.svg")
+```
+
+
+
+## Summary
+
+We learned the basic features in a map composition and how to construct
+a map that is publication worthy. The next set of tutorials will be
+focused more on techniques on data management and spatial analyses --
+these will typically include analysis of aggregated data and various
+spatial interpolation approaches.
+
+\newpage
+
+# Lesson 5: Visualising spatial patterns in aggregated health data in R
+
+| Learning Outcomes                         | GIS Concepts            |
+|-------------------------------------------|-------------------------|
+| Add point data with coordinates           | `st_as_sf()` (p56)      |
+| Join data based on spatial location       | `st_join` (p61)         |
+| Aggregate raster data by vector polygons  | `extract()` (p66)       |
+| Calculating at risk population            | `<-` (p73)              |
+
+## Introduction
+
+A key step in most epidemiological analyses from a geographic context is to visualise the spatial patterns of infectious or non-communicable disease. This allows for an examination of any spatial trends that might be present as well as the generation of hypotheses about factors that may influence the observed patterns. Visualisation is an important facet for communicating the findings to the target audience such as community health workers, public health officials and stakeholders who may use these maps to make decisions on how treatments and intervention are allocated to at risk populations.
+
+Here, we will visualise data from a Schistosomiasis (Schistosoma mansoni) baseline survey from 1998 testing sites in Uganda to explore the spatial distribution in the prevalence of infection to produce a map to support monitoring and evaluation of the national community-based deworming programme.
+
+To construct a district-level map showing the rates of Helminths
+ - you will need to perform spatial aggregation of reports to obtain overall reported numbers of positive cases within a
+district. Secondly, to better understand the population at risk, we will calculate the rate of cases by dividing the number of cases by the population. 
+
+This tutorial will provide a step-by-step guide for conducting such
+spatial analysis in R
+
+### Prerequisites
+
+To attempt lesson 5, you need to have completed lessons 1, 2, 3 and 4.
+We will be staring a new project, but it is assumed that you know how
+to add, import and save spatial data, understand spatial layer
+management, as well as knowing how to create maps for export in R.
+
+## Downloading data
+
+As we did for the previous lessons, please make sure you have downloaded
+data for Lesson 5: `lesson-5-data.zip` from the website and extract it.
+You should have 14 files.
+
+## Load the required vector files in R
+
+The following shapefiles should be loaded into R:
+
+-   `African_countries.shp` (contains all African countries)
+-   `Health_districts.shp` (the health district boundaries of Uganda)
+
+```{r message=FALSE}
+#load library
+library(sf)
+library(tmap)
+#read the two shapefiles in
+africa <- st_read("African_countries.shp")
+health <- st_read("Health_districts.shp")
+```
+
+You can use the `qtm()` function to quickly plot the maps. Can you remember how to do this?
+
+The maps should look like this:
+
+```{r echo=FALSE}
+qtm(africa)
+qtm(health)
+```
+
+::: callout-note
+**Tip:** You might wonder what is going on in the south-east corner of Uganda. The country boundary ends in a fairly square border, but the health districts do not cover this area completely. Add in an OpenStreetMap base map to see why this is. This is because this is part of Lake Victoria. Odd things like this can happen when dealing with boundaries over bodies of water - which is then arguably compounded when colonial powers divide up land by drawing straight lines on maps with no regard to how the land is already divided or used. From our point of view the national boundary makes sense, but with regard to health districts, this makes less sense as there are no people living in the body of water - apart from on the various islands which are shown. We have to live with it and symbolise it as best we can. Have a look at other maps of Uganda to see how they have dealt with this issue. 
+:::
+
+
+## Importing spatial and victimisation dataset
+
+The following CSV dataset can be imported into R:
+
+-   `Uganda Helminths point data.csv` (CSV file of Helminths testing data)
+
+::: callout-note
+**Tip:** This is a CSV file, and can be opened in Excel. Have
+a look at it in Excel and see how the data are organised.
+:::
+
+The `Uganda Helminths point data.csv` is a spreadsheet and can be made into
+spatial data because it contains coordinates of the locations of the
+police stations. Therefore when importing it, we need to declare which
+fields correspond to longitude and latitude. You can do this by:
+
+```{r}
+#read in csv file
+helminths <- read.csv("Uganda Helminths point data.csv")
+#use head to check the data have read in correctly
+head(helminths)
+```
+If you explore the data, you will see some latitude and longitude values are set to `99999` which is not a valid value. This means these are unknown, and we need to remove these before we move to the next step. In this code, the `-` means remove, and we use the `which()` function to find out which rows match the criteria (`helminths$latitude == 99999`) in this case. 
+
+```{r}
+#remove data with missing lat & long
+helminths <- helminths[-which(helminths$latitude == 99999),]
+```
+
+Currently the data are just a standard `data.frame`. As far as R is concerned, it is just a table with some columns of text and numbers. However we know that two of these columns (`longitude` and `latitude`) are actually coordinates, and we can use these to plot this data on a map. 
+
+Here we are taking the `helminths` data, specifying the coordinate columns and telling R they are using the Latitude Longitude / WGS1984 coordinate system (`crs = 4326`). We are then saving this as `helminths_sf`, spatial data in the `sf` format. 
+
+```{r}
+#make sf file
+helminths_sf <- st_as_sf(helminths, coords = c('longitude', 'latitude'), 
+                         crs = 4326)
+```
+
+Again, we can use `qtm()` to quickly preview the data:
+
+```{r}
+qtm(helminths_sf)
+```
+
+It's sometimes useful to provide some context, so we can add the health districts to this map:
+
+```{r}
+tm_shape(health) + tm_polygons() + #plot health districts
+  tm_shape(helminths_sf) + tm_dots() #plot helminths_sf
+```
+
+Finally, we also have the option of saving our newly created data as a shapefile:
+
+```{r, eval=FALSE}
+#save helminths_sf
+st_write(helminths_sf, "Uganda Helminths point data.shp")
+```
+
+
+## Aggregation of point spatial data to polygon
+
+Currently we have the point Helminths data. There are many different ways we could use this data now. for example, we could use the points to produce a point map showing the number of reported cases of Helminths:
+
+```{r}
+#create map
+tm_shape(health) + tm_polygons() +
+  tm_shape(helminths_sf) + tm_dots("sth_prevlance", palette = "YlOrRd", n = 7, 
+                                   style = "jenks", size = 0.25)
+```
+
+As you can see, there are some obvious spatial patterns in the number
+of reported cases, and through visual inspection, there may be
+evidence of clustering. However, this map lacks any epidemological
+rigorousness and interest due to the fact that it just total numbers of
+cases recorded for each area.
+
+Additionally we are showing point data, so it's hard to see what is going on in the urban areas that have a large number of data points. 
+
+For comparability, we could choose to aggregate the points by health district
+in order to know the overall prevlance of Helminths cases that have occurred
+within a district. We can also then work out the total population at risk by multiplying the prevlance by the popualtion. 
+
+To do this calculation, we will need Uganda's population census
+data for 2020. What is available is population counts gridded at a
+resolution of 100m (derived from WorldPop data). Using the district
+vector layers (i.e. `health_districts`) -- we will generate two shape
+files:
+
+1.  A shape file containing the aggregated counts of Helminths within each
+    health district.
+2.  A shape file containing the estimated population size of 2020 within
+    each district.
+
+The final steps will include merging the two layers before calculating
+the population at risk.
+
+## Aggregation of point data to health districts
+
+Currently we have the point Helminths data overlaid on the health boundaries. It's worth looking at the point data attribute table. We want to aggregate this to the health districts to create a choropleth map. If you look closely at the data, you may notice that on the point data, as well as their coordinates (which we used to plot them on the map) we also have the health district listed - under `iu_id_source`. This matches the health district listed in the `health` layer under `IU_ID`. 
+
+So we have a choice - we could either aggregate the data based on their location (i.e. the coordinates) or based on which health district they are listed as falling under (the `iu_id_soure` column). This is fairly common with spatial data. It's important to remember that with data like this, there is no guarantee that both forms of data will be consistent - it is quite possible that some points might be located under one district, but be listed in the column as being located in another district. We could do some analysis to check this if we wanted to. 
+
+For this exercise we are going to aggregate the data by the spatial location - i.e., the coordinates showing where the point data are. 
+
+This is called a spatial join, and we can perform this using the following code:
+
+```{r}
+# spatial join
+health_helminths <- st_join(health, helminths_sf)
+```
+
+This creates a table with all combinations of the `health` and `helminths_sf` data. 
+
+We only need to keep some of the columns:
+
+```{r}
+#show column names
+colnames(health_helminths)
+#remove columns we don't need
+health_helminths <- health_helminths[,c("IU_ID","sth_examined", "sth_positive")]
+```
+
+We then also need to aggregate the data together. We are interested in getting the data by health district (which is listed at `IU_ID`) so we are going to use the `aggregate` function to do this:
+
+```{r}
+health_helminths_aggregated <- aggregate(x = health_helminths, 
+                    by = list(health_helminths$IU_ID), FUN = sum)
+```
+
+This collects together all of the rows with the same `IU_ID`, and sums together the values. For the `sth_examined` and `sth_positive` columns, this is exactly what we want - the total of these values for each health district. However it also sums together all of the ID values - `IU_ID` - which is just a meaningless number. However it also adds a new column (called `Group.1` by default) which lists the health district ID. We can tidy this data up:
+
+```{r}
+#remove IUID column (which is sum of IDs, so irrelevant)
+health_helminths_aggregated$IU_ID <- NULL
+#check data
+head(health_helminths_aggregated)
+#rename first column to "IU_ID"
+colnames(health_helminths_aggregated)[1] <- "IU_ID"
+#check data
+head(health_helminths_aggregated)
+```
+
+Checking the `health_helminths_aggregated` data we can see the new fields called `sth_examined` and `sth_positive.` `sth_examined` refers to the number of examinations aggregated in a district, and `sth_positive` refers to the number if positive results within a district.
+
+We are interested in the prevlance, so we need to calculate this by:
+
+`sth_positive / sth_examined`
+
+```{r}
+#calc prevlance
+health_helminths_aggregated$sth_prevlance <- 
+  health_helminths_aggregated$sth_positive / health_helminths_aggregated$sth_examined
+#check
+head(health_helminths_aggregated)
+```
+
+In R, it's worth plotting a quick map to make sure the data have been processed correctly:
+
+```{r}
+#qtm
+qtm(health_helminths_aggregated)
+#choropleth map
+tm_shape(health_helminths_aggregated) + tm_polygons("sth_prevlance", 
+                      palette = "YlOrRd", n = 7, style = "jenks")
+```
+
+::: callout-note
+**Optional Exercise**
+
+It is very common for these type of data to be put in WHO categories to gauge levels of how infectious are intense at a point/area. The categories are:
+
+-    < 1.0% (Negligible)
+-    1.0% to 19.9% (Low risk)
+-    20.0% to 49.9% (Moderate risk)
+-    \> 50.0% (High risk)
+
+We can used the `fixed` breaks option to set our classifications manually:
+
+```{r}
+tm_shape(health_helminths_aggregated) + tm_polygons("sth_prevlance", 
+  palette = "Reds", n = 4, 
+  style = "fixed", breaks=c(0, 0.1, 0.2, 0.5, 1))
+```
+:::
+
+The aggregation for Helminths prevlance by health district is complete. We will return to this layer in a bit. Now, we will perform the same procedure for the
+raster population 2020 census data.
+
+## Adding raster data to R
+
+Up to this point, we've been adding only vector data to R Here, we
+will start to add raster data. This raster data will show the population
+density i.e., estimated number of people per grid square at a resolution
+of 100m (resolution means the size of each of the cells, so in this case
+this means that length and width of each grid is 100m).
+
+To load and plot the raster data:
+
+```{r}
+#install the terra library if you need to 
+#install.packages("terra")
+#load the terra library
+library(terra)
+#load raster data
+pop <- rast("uga_ppp_2020_UNadj_constrained.tif")
+#display summary data
+pop
+#plot the data
+plot(pop)
+#usually we would plot the data without axes
+plot(pop, axes=FALSE)
+#the histogram can also be useful sometimes
+hist(pop)
+```
+
+*Important note: Raster data are often stored as a GeoTIFF (either as
+.tif, .tiff, .TIF or .TIFF) format*.
+
+So far this has been using the basic `plot()` function. We can also use the `tmap` functions we have used already:
+
+```{r include=FALSE}
+#qtm
+qtm(pop)
+#tm_shape
+tm_shape(pop) + tm_raster()
+```
+
+```{r message=FALSE, warning=FALSE}
+#overlaying on the health boundaries
+tm_shape(health_helminths_aggregated) + tm_polygons() +
+  tm_shape(pop) + tm_raster()
+```
+
+Now, we've loaded our population data, let's proceed to aggregate this
+to obtain district-level population counts.
+
+## Deriving population size of districts -- aggregation of raster data by polygons
+
+The process for aggregating raster values within polygons is termed Zonal Statistics. This will calculate a range of statistics using the raster data for each polygon zone. In our case, we want to calculate the total population (the sum of the raster cell values) for each health district. The process is quite computationally complex and therefore takes awhile to run. Be patient, and wait for the `>` symbol to reappear in the Console:
+
+```{r}
+#takes a some seconds - about 20 sec on my machine
+zonal_stats <- extract(pop, health_helminths_aggregated, fun = "sum", na.rm = TRUE)
+```
+
+This has created `zonal_stats`, a list of the totals. We need to add this back on to the existing data:
+
+```{r}
+#add raster data back on to health
+health_helminths_aggregated <- cbind(health_helminths_aggregated, zonal_stats)
+head(health_helminths_aggregated)
+```
+We know that the order of the health districts is the same in the `zonal_stats` output as it was in the `health_helminths_aggregated` input, so we can use the `cbind()` function, which stands for column bind. This just sticks the columns together. 
+
+Again, we can do a map to check that the data look about right:
+
+```{r, message=FALSE}
+qtm(health_helminths_aggregated, fill = "uga_ppp_2020_UNadj_constrained")
+```
+
+Finally, we can save this as a new shapefile called Helminths health districts.shp. Do you remember how to do this?
+
+```{r eval=FALSE, include=FALSE}
+#save health_helminths_aggregated
+st_write(health_helminths_aggregated, "Uganda Helminths aggregated.shp")
+```
+
+## Calculating Helminths risk rate
+
+Our layer named `health_helminths_aggregated` is the clean spatial dataset with the appropriate field names for estimating the health district level Helminths rates in Uganda.
+
+Now that we know the Helminths rate, we can use the population data to work out how many people might be at risk of contracting Helminths. To do this we multiply the prevlance `sth_prevlance` by the total population `uga_ppp_2020_UNadj_constrained`. 
+
+```{r}
+# Calculating Helminths risk rate
+
+health_helminths_aggregated$at_risk <- health_helminths_aggregated$sth_prevlance *
+  health_helminths_aggregated$uga_ppp_2020_UNadj_constrained
+```
+
+The final attribute table should appear as follows:
+
+```{r}
+head(health_helminths_aggregated)
+```
+
+We can now generate our health district level map of Helminths rates. It is
+the same procedure when we created the point maps for the stations
+earlier on in this exercise.
+
+```{r, message=FALSE}
+qtm(health_helminths_aggregated, fill = "at_risk")
+```
+
+It is standard practice to split the mapping of our prevalence data into these WHO categories to gauge levels of how infectious are intense at a point/area. The categories are:
+
+-    < 1.0% (Negligible)
+-    1.0% to 19.9% (Low risk)
+-    20.0% to 49.9% (Moderate risk)
+-    \> 50.0% (High risk)
+
+```{r}
+# using the fixed breaks style mentioned earlier
+tm_shape(health_helminths_aggregated) + tm_polygons("sth_prevlance", 
+  palette = "Reds", n = 4, style = "fixed", breaks=c(0, 0.1, 0.2, 0.5, 1))
+```
+
+
+Do note that we have some missing data for some health regions - this is not unusual with this type of data. In the image above, they are shown as mustard yellow, because the underneath layers are showing through. Note how they don't have any point data in them - this is why no data are in the polygon layer. 
+
+## Interpretation of output
+
+You can see the rates of Helminths in 2020 are represented as a legend under layer
+`health_helminths_aggregated`. Districts with the lowest reported
+rates are those with estimates anything at/below 1%. Likewise, districts with the highest reported rates are those with anything at/above 50%.
+
+## Appendix: Lesson 5
+
+**Data source(s):**
+
+`African_countries` Shape file -
+https://www.geoboundaries.org/downloadCGAZ.html
+
+`uga_ppp_2020_UNadj_constrained` Raster data file - https://hub.worldpop.org/geodata/summary?id=49721
+
+`Uganda Helminths point data.csv` - Created from a combination of  records directly released from national NTD programmes from participating countries primarily from Sub-Saharan Africa; and data abstracted from peer-reviewed publications and official reports – these abstracted data were used to create this open-resource known as the [Global Atlas for Helminth Infection - GAHI](https://www.thiswormyworld.org/). The full list of references is [here](https://www.thiswormyworld.org/sites/default/files/Uganda_STH_SCH_references.pdf)  The abstracted dataset (GAHI only) can be downloaded [here](https://lshtm.maps.arcgis.com/apps/webappviewer/index.html?id=2e1bc70731114537a8504e3260b6fbc0). The GAHI data with the national data released by participating countries were combined into the project Expanded Special Project for Elimination of Neglected Tropical Disease (ESPEN-NTD) [here](https://espen.afro.who.int/). The data set (i.e., the one I have shared with you) used for the exercise can be downloaded [here](https://espen.afro.who.int/diseases/schistosomiasis). The user will need to select “Data” tab, and select “Uganda” (under Country) and “Site Level” (under Level) to get the full point data. One can also go to the “Tools & Resources” section get the any data for the different disease types under “Download data” tab. 
+
+`Health_districts.shp` shape files - From EPSEN-NTD, at https://espen.afro.who.int/tools-resources/cartography-database
+
+**Citation(s):**
+
+Runfola, D. et al. (2020) geoBoundaries: A global database of political
+administrative boundaries. PLoS ONE 15(4): e0231866.
+https://doi.org/10.1371/journal.pone.0231866
+
+\newpage
+
+# Lesson 6: Various spatial interpolation techniques in R
+
+| Learning Outcomes                                    | GIS Concepts                      |
+|------------------------------------------------------|----------------------------------|
+| Using IDWs to predict rates of Helminths             | IWD (p78)                        |
+| Visualising IDW outputs                              | Symbology (p85)                  |
+| Using KDE to understand the density of arson attacks | KDE (p85)                        |
+| Visualising KDE outputs                              | Symbology (p91)                  |
+
+## Introduction
+
+Spatial interpolation are techniques used to predict values of cells from a sample of existing data points. These data points can in turn, be utilised to determine unknown values for any geographic point.
+
+For instance, suppose I know the land surface temperature value of a single point in a location - from this point, I can use spatial interpolation to predict land surface temperature value of nearby and unknown points etc.
+
+There are wide range of spatial interpolation techniques – these include Inverse Distance Weighting (IDW), Kernel Density Estimation (KDE), and the more advanced methods such as Kriging and Model-Based Geostatistics (MBGs).
+
+In R, we will learn how to perform two basic spatial interpolation methods:
+
+- Part 1: Inverse Distance Weighting (IDW)
+- Part 2: Kernel Density Estimation (KDE)
+
+In the context of epidemiology – the Inverse Distance Weighting (IDW) method is primarily focused on using point data which measures either prevalence or incidence rates for a range of events (i.e., continuous). Kernel Density Estimation (KDE) specifically uses single event or a case as point data (i.e., discrete), and is therefore concerned with predicting the density of prevalence. 
+
+What all spatial techniques have in common is that they use point vector data to make surface predictions – these predicted values, which are in turn, stored as raster data.
+
+We will explore how to use these techniques in R, with the lesson being split into two parts.
+
+
+### Prerequisites
+
+To attempt lesson 6, you need to have completed lessons 1, 2, 3 and 4.
+We will be starting a new project, but it is assumed that you know how
+to add, import and save spatial data, understand spatial layer
+management, as well as knowing how to create maps for export in R.
+
+### Downloading data
+
+As we did for the previous lessons, please make sure you have downloaded
+data for Lesson 6: `lesson-6-data.zip` from the website and extract it.
+You should have 37 files.
+
+## Part 1: Inverse Distance Weighting (IDW)
+
+Let’s begin part 1 of Lesson 6 with Inverse Distance Weighting (IDW).
+
+### Load the required vector files in R
+
+The following shapefiles should be loaded into R:
+
+-   `National_boundary.shp` (the national boundary of Uganda)
+-   `Uganda Helminths point data.shp` (the point data of testing of Helminths we created from a CSV file in Lesson 5)
+
+```{r message=FALSE}
+#load library
+library(sf)
+library(tmap)
+#read the two shapefiles in
+national_boundary <- st_read("National_boundary.shp")
+helminths_point <- st_read("Uganda Helminths point data.shp")
+```
+We can show the points on a map:
+
+```{r}
+qtm(helminths_point)
+```
+
+
+The black  points in the above image represent locations of health centres in Uganda. For each point we have determined the rates of Helminths, using the data from Lesson 5.
+
+This will give us point prevlance rate data. We can use IDW to interpolate these estimates over unmeasured surface where there are no data – i.e., white spaces between health centres. This technique uses an explicit assumption that points that are close to each one another are alike than points that are farther away. IDW method uses measured values surrounding an unmeasured point to make predictions. The result output is a continuous surface on a raster map.
+
+### Using IDWs to predict the rates of Helminths
+
+*Currently, this example uses the `sp` library for reading in spatial data, rather than the `sf` library. This is an older library, and slowly R Spatial work is moving from `sp` to `sf`. However, some more advanced analyses have not fully moved over yet, so for IDW and KDE we are using the `sp` library. This will be updated once this is fully supported by `sf`.* 
+
+Load these libraries, and install them (using `install.packages("")`) as needed:
+
+```{r message=FALSE}
+library(gstat) 
+library(terra)
+library(sp) 
+library(rgdal)
+```
+
+Load the shape file using the `sp` library:
+
+```{r warning=FALSE}
+P_latlng <- readOGR("Uganda Helminths point data.shp")
+```
+
+Currently, the Helminths point data are in the latitude longitude coordinate system. This is fine for everything we have done so far, but for these analysis we have to do a lot of calculations with the location of the data. When using latitude longitude, the coordinates are in degrees. The size of a degree varies depending where you are on the earth's surface. You can work this out, but there is some complex trigonometry involved. 
+
+As an alternative, if we use a projected coordinate system, then the coordinates will be in meters. This very much simplifies the calculations needed. So therefore we need to reproject our data from latitude longitude to UTM Zone 36 N. 
+
+```{r}
+#reproject P_latlng from latlong to UTM Zone 36 N (EPSG: 32636)
+P <- spTransform(P_latlng, CRS("+init=epsg:32636"))
+#show the data
+qtm(P)
+```
+
+We can also view the `head()` as well. It is the `sth_prevla` column (prevlance) that we will be using for the analysis. 
+
+```{r}
+head(P)
+```
+
+We can use the `idw()` function in the R library `gstat` to generate a raster template which the rates of Helminths can be interpolated over. The resulting surface will be the predicted rates of Helminths.
+
+This can be achieved in the following steps:
+
+```{r}
+#Create a blank grid of points to sample
+grd              <- as.data.frame(spsample(P, "regular", n=50000))
+names(grd)       <- c("X", "Y")
+coordinates(grd) <- c("X", "Y")
+gridded(grd)     <- TRUE  # Create SpatialPixel object
+fullgrid(grd)    <- TRUE  # Create SpatialGrid object
+
+# Add P's projection information to the empty grid
+proj4string(P) <- proj4string(P) # Temp fix until new proj env is adopted
+proj4string(grd) <- proj4string(P)
+
+# Interpolate the grid cells using a power value of 2 (idp=2.0)
+P.idw <- idw(sth_prevla ~ 1, P, newdata=grd, idp = 2.0)
+```
+*This last line (creating `P.idw`) should have run almost instantly. We can use the `tictoc` library to time code in R. For the data in UTM, this took 0.25 sec on my computer. If the data were in latitude longitdue, it took 12.63 sec on my computer. You can see the importance of re-projecting the data!*
+
+We can then extract the output, and map it:
+
+```{r}
+r       <- rast(P.idw)
+# Plot
+qtm(r) 
+```
+
+There are two elements to the output - `var1.pred` and `var1.var`. Clearly the output is in `var1.pred` so we will use this in our mapping:
+
+```{r}
+tm_shape(r["var1.pred"]) + 
+  tm_raster(n=10,palette = "-RdBu",
+            title="Predicted prevlance rate") + 
+tm_shape(national_boundary) + 
+  tm_borders(col = "black", lwd = 1) +
+  tm_legend(legend.outside=TRUE)
+```
+
+<!-- Potentially add cropping of output to National boundary -->
+
+### Interpretation of output
+
+We have produced a map showing the predicted incidence rates of Helminths in South Africa. An example of interpreting this map – areas with lighter blue colours indicate that the reported rates for Helminths are between 0.3 and 0.4, whereas areas with the lowest intensity of Helminths are shown in dark blue and are predicted to be reported <= 0.1 (at resolution of 10km).
+
+This concludes part 1 of lesson 5. 
+
+## Part 2: Kernel Density Estimation (KDE)
+
+Let’s begin part 2 of Lesson 6 with Kernel Density Estimation (KDE).
+
+- Start a new script in R by choosing **File > New File > R Script**. 
+
+Crime event data shows the actual location in which a crime has taken place and has been georeferenced – for example, the address of a home that’s been burgled, graffiti on the wall of someone’s property or the location of an arson crime. We might be particularly interested in wanting to visualise the occurrence of crime events as density measure. We can do this using a useful technical called the Kernel Density Estimation (KDE) which is typically a non-parametric function that can be used to estimate the density of events (crime) in a setting.
+
+The process for making raster maps with KDEs is easy. This tutorial will provide a step-by-step guide for conducting such analysis in R using the `SpatialKDE` library.
+
+There was wave of vandalism in Kenya – arsonists targeted and burnt more than 100 schools in 2016. We have available a list of 121 schools that were burnt by arsonists in 2016. The schools that were victimised in such manner have been geo-located and are examples of point event data. Suppose that authorities are interested in knowing the density of schools burnt within certain areas (at resolution 10km) then KDEs will be a good approach for addressing this problem.
+
+Let’s begin by creating our atlas for Kenya and visualising the distribution of schools that were burnt in 2016.
+
+#### Using KDE to understand the density of arson attacks on schools
+
+The following shape files should be added into R:
+
+- `KEN_Arson_schools_2016.shp` (point vector data containing location of schools that were torched by arsonists in 2016)
+- `geoBoundaries-KEN-ADM1.shp` (contains the county boundaries for Kenya)
+- `geoBoundaries-KEN-ADM0.shp` (contains the national boundary for Kenya)
+
+```{r message=FALSE}
+#load library
+library(sf)
+library(tmap)
+#read the shapefiles in
+arson_latlng <- st_read("KEN_Arson_schools_2016.shp")
+national_boundary <- st_read("geoBoundaries-KEN-ADM0.shp")
+county_boundaries <- st_read("geoBoundaries-KEN-ADM1.shp")
+
+```
+
+We can show the data:
+
+```{r}
+tm_shape(national_boundary) + tm_polygons() +
+  tm_shape(arson_latlng) + tm_dots()
+```
+
+Like with IDW, it is better for processing for the data to be in a projected coordinate system rather than latitude longitude. As the data are for Kenya, we need to reproject the data to UTM Zone 35N which is EPSG:32635. 
+
+```{r}
+#reproject UTM Zone 35 N (EPSG: 32635)
+arson <- st_transform(arson_latlng, crs = 32635)
+#show the data
+qtm(arson)
+```
+
+We can also view the `head()` as well. For this analysis, it is only the spatial location that is important. We don't have any attribute information that we are using for this analysis. 
+
+We have two parameters to set before we start the analysis - `cell_size` and `band_width`. Cell size is the size of the cells we are using - `5000` for this data, which is 5,000 m or 5km. Bandwidth is 100,000m or 100km. This is slightly different from the values we used in QGIS, because of the computational requirements for R. Feel free to try the lower values if you like (1km, 50km) but the processing may take a long time. We also then need to create a grid for the analysis, like we did with IDW.
+
+```{r}
+#load the library
+library(SpatialKDE)
+
+#set parameters
+cell_size <- 5000
+band_width <- 100000
+
+#grid creation
+grid <- create_grid_rectangular(arson, cell_size = cell_size, side_offset = band_width)
+```
+
+We can then actually do the analysis:
+
+```{r}
+output <- kde(arson, band_width = band_width, kernel = "quartic", grid = grid)
+```
+We can then plot the output using the usual methods:
+
+```{r}
+tm_shape(output) +
+  tm_polygons(col = "kde_value", palette = "viridis", title = "KDE Estimate")
+```
+
+```{r}
+tm_shape(output) +
+  tm_polygons(col = "kde_value", palette = "viridis", title = "KDE Estimate") +
+  tm_shape(arson) +
+  tm_dots(size = 0.01, col = "red") 
+```
+
+<!-- Crop raster -->
+
+
+#### Interpretation of output
+
+We have produced a map showing the number of schools that were victims to arson attacks during 2016 in Kenya. The map reports the number of schools burnt per 5km2. An example of interpreting this map – areas with the yellows indicate that between 30 and 35 schools (per 5km2), were burnt in 2016. Whereas, areas with the darkest blue colour indicates that at most 5 schools (per 5km2) were targeted and burnt down by arsonists.
+
+
+**Data source(s):**
+
+`African_countries` Shape file -
+https://www.geoboundaries.org/downloadCGAZ.html
+
+`geoBoundaries-KEN-ADM0` Shape file & `geoBoundaries-KEN-ADM1.shp` 
+- https://www.geoboundaries.org/index.html#getdata
+
+`KEN_Arson_schools_2016` Shape file - https://africaopendata.org/dataset/burning-school-in-kenya
+
+----
+
+*This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. You are free to share – copy and redistribute the material in any medium or format. You are free to adapt – remix, transform and build upon the material. You may not use the material for commercial purposes. If you have any questions, or concerns – please send an email to Nick Bearman (nick@nickbearman.com)*
