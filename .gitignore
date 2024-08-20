@@ -276,3 +276,5 @@ TSWLatexianTemp*
 *.lpz
 .Rproj.user
 mapping-visualisation-social-data/.Rhistory
+mapping-visualisation-social-data/manual-qgis.pdf
+mapping-visualisation-social-data/manual-qgis.html

@@ -5,7 +5,8 @@ toc: true
 number-sections: true
 format: 
   pdf: default
-  html: default
+  html: 
+    embed-resources: TRUE
 editor: 
   markdown: 
     wrap: 72
