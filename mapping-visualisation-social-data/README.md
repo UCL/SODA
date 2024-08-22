@@ -13,7 +13,7 @@ The links are:
 - https://github.com/UCL/SODA/releases/latest/download/lesson-5-data.zip
 - https://github.com/UCL/SODA/releases/latest/download/lesson-6-data.zip
 
-If you have a small update, you do not need to update the compiled files. Just update the source files in the repository, and submit a pull request. This will be reviewed and merged if appropriate. The source PDF and HTML files will then be manually updated. 
+If you have a small update, you do not need to update the compiled files. See [here](editing-on-github.md) for details on how to do this using GitHub. Or you can update the source files in the repository, and submit a pull request. This will be reviewed and merged if appropriate. The source PDF and HTML files will then be manually updated. 
 
 To compile the R material locally, you need to extract the data in to a working folder. This is set on line 16 of `manual-r.qmd` and is currently set to `C:/Users/nick/Documents/GIS/sdi-data`. Extract a copy of all of the zip data files (`lesson-2-data.zip`, `lesson-3-data.zip`, `lesson-5-data.zip` and `lesson-6-data.zip`). Some of the files are duplicated, it should not matter whether you overwrite files or not. Set this folder to whatever you want, and then it should compile fine. 
 
