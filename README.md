@@ -17,6 +17,7 @@ UCL Social Data Institute repository
 5. UCL Library
 
 # Training
+1. [Mapping Crime and Social Data](mapping-visualisation-social-data/README.md) using QGIS or R
 1. Data wrangling Python
 2. R data wrangling
 
