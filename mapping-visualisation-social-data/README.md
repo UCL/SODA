@@ -8,6 +8,8 @@ This repository is listed on the RGS website and also includes some direct links
 The links are:
 - https://github.com/UCL/SODA/releases/latest/download/manual-qgis.pdf
 - https://github.com/UCL/SODA/releases/latest/download/manual-qgis.html
+- https://github.com/UCL/SODA/releases/latest/download/manual-r.pdf
+- https://github.com/UCL/SODA/releases/latest/download/manual-r.html
 - https://github.com/UCL/SODA/releases/latest/download/lesson-2-data.zip
 - https://github.com/UCL/SODA/releases/latest/download/lesson-3-data.zip
 - https://github.com/UCL/SODA/releases/latest/download/lesson-5-data.zip
