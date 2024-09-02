@@ -1,6 +1,8 @@
 
 ## A Geographer's Introduction to QGIS
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.13626798.svg)](https://doi.org/10.5281/zenodo.13626798)
+
 This is the readme file for the A Geographer's Introduction to QGIS practical work. The main listing for the resource is https://www.rgs.org/research/higher-education-resources/a-geographers-introduction-to-qgis and when directing people to the resource, use this link. 
 
 This repository is listed on the RGS website and also includes some direct links to resources. If you want to update the resource, please note that the repository only contains the source files (Quarto and images). The compiled PDF and HTML files are not stored in the repository. They are stored as binaries under a release. 
