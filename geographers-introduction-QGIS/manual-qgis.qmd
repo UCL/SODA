@@ -849,7 +849,7 @@ The steps are as follows:
 -   We want to display the Poverty Rate. In **Value** select the field
     name `_Poverty_R`
 
--   In **Colour ramp**, click the arrow
+-   In **Color ramp**, click the arrow
     ![](images/down-arrow.png){height="20"} to expand the selection of
     colours. Choose **All Color Ramps** and then choose **OrRd**.
 
@@ -1558,7 +1558,7 @@ Currently we have the point Helminths data. There are many different ways we cou
     select **Graduated** on the topmost selection bar.
 -   We want to display the prevlance of Helminths. In **Value** select the field
     name `sth_prevla`.
--   In **Colour ramp**, under **All Color Ramps**, select the colours
+-   In **Color ramp**, under **All Color Ramps**, select the colours
     **YlOrRd**.
 -   You can specify the classification method (equal, quantile, natural
     breaks, standard deviation or pretty breaks) for generating sets of
@@ -1640,6 +1640,10 @@ We are actually interested in the `sth_prevla` field - prevlance of Helminths. W
 -   Under **Summaries to calculate** select **sum**.
 
 -   Click on **Run**.
+
+::: callout-note
+You may get a message (in red) that says `No spatial index exists for join layer, performance will be severely degraded.` This is not necessarily a problem, it is just letting you know that there is no spatial index, which means that the tool will take longer to run than normal. It still works, and for this data, it still is very quick (<1 second, as you can see in the output). So all is fine and you should be able to carry on. This is only relevant with very large data sets, where a spatial index can make things operate faster, but for the size of data we are working with, we can ignore this. 
+:::
 
 -   Click **Close** when the aggregation is complete.
 
@@ -1846,7 +1850,7 @@ earlier on in this exercise. Recall the steps were:
 -   We want to display the prevlance for each health district. For
     **Value** select `sth_prevla`.
 
--   In **Colour ramp** select **Reds**.
+-   In **Color ramp** select **Reds**.
 
 -   You can specify the method for which classes are generated (equal
     interval, quantile, natural breaks, standard deviation or pretty
@@ -2013,7 +2017,7 @@ You can see the image is in black and white at the moment. We can clear the appe
 - Right-click on `Helminths_gridded_idw` and select **Properties** to access its Layer Properties menu.
 - Click **Symbology** located on the left-hand side of the Layer Properties menu to access the band rendering settings. Under **Render type**, select **Singleband pseudocolor**.
 - Set **Interpolation** to **Discrete**.
-- Under **Color ramp**, **All Color Ramps**, select **RdYlBu**. The colour palette goes from red to yellow to blue (i.e., low intensity of Helsmiths from red, and higher as blue); therefore, we need to invert the colour palette accordingly by selecting **Invert Colour Ramp** after choosing **RdYlBu**.
+- Under **Color ramp**, **All Color Ramps**, select **RdYlBu**. The colour palette goes from red to yellow to blue (i.e., low intensity of Helsmiths from red, and higher as blue); therefore, we need to invert the colour palette accordingly by selecting **Invert Color Ramp** after choosing **RdYlBu**.
 - Choose the mode as **Quantile**, and **7** as the number of classes. Do not click on OK yet.
 - Click **Transparency** located on the left-hand side of the Layer Properties menu to access the Global transparency settings. You can set the levels of transparency to **80%** by moving the slide bar.
 - Now, click **OK** to finalise changes to appearance of results.
@@ -2117,7 +2121,7 @@ As you can see the resulting image is in black and white at the moment. We can c
 - Under **Render type**, select **Singleband pseudocolor**.
 - Under **Band** in the **min/max section** – notice that maximum value predicted by the KDEs was 15.1077, and the minimum value predicted is something just above 0.000. Let’s modify this by typing `0` as the minimum value in the **Min** section. Now, type `16` as the maximum value in the **Max** section. We are using the range from 0 to 16 to create our legends that hold discrete values.
 - Under **Interpolation**, select **Discrete**.
-- Under **Colour ramp**, select **Reds**. The colour palette goes from lightest of reds to the darkest of reds (i.e., lowest intensity of victimisation is represented by lightest of reds, and highest victimisation are the darkest of reds).
+- Under **Color ramp**, select **Reds**. The colour palette goes from lightest of reds to the darkest of reds (i.e., lowest intensity of victimisation is represented by lightest of reds, and highest victimisation are the darkest of reds).
 - Under **Mode**, choose **Equal Interval** and select 8 as the number of classes. You will see a notation of `inf` in the last category. Do not be alarmed – it indicates any value from just above the previous class to infinity. In our case it is 15 - 16. Change the label of `inf` to `15 - 16`. 
 
 - The first category in the legend corresponds to any grid that has ≤2 schools that were burnt. The next category corresponds to 3-4 schools that were burnt, the next 5-6 and so on. Update the rest of the labels accordingly (see below to view the changes).
