@@ -39,6 +39,6 @@ But we can tweak this to get the latest version:
 
 	> https://github.com/UCL/SODA/releases/latest/download/lesson-2-data.zip
 
-We have done this will all of the links on the RGS page. 
+We have done this with all of the links on the RGS page. 
 
 Any questions, please raise an [issue](https://github.com/UCL/SODA/issues). 
